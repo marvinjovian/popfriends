@@ -208,18 +208,48 @@
   input.pct{ padding-left:10px; }
   input:focus{ background:var(--white); box-shadow:2px 2px 0 var(--line); }
 
-  .ing-labels, .ing-row{
-    display:grid; grid-template-columns: 1.2fr .7fr .55fr .55fr .45fr 22px; gap:6px; align-items:center;
+  .ing-caption{
+    font-size:11.5px; font-weight:600; color:var(--ink-soft); font-style:italic;
+    margin-bottom:10px;
   }
-  .ing-labels{
-    font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.03em;
-    color:var(--ink-soft); padding-bottom:6px; margin-bottom:6px; border-bottom:2px dashed var(--line);
+  .ing-row{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(118px,1fr));
+    gap:10px 14px;
+    padding:14px 0;
+    border-bottom:1.5px dashed var(--line);
+    align-items:end;
+    transition: outline .15s;
+    border-radius:10px;
   }
-  .ing-row{ padding:5px 0; }
-  .ing-row input{ font-size:12.5px; padding:6px 6px; border-radius:8px; font-weight:600; text-align:left; }
-  .ing-row input:nth-child(n+2){ text-align:right; }
-  .ing-row .rm{ cursor:pointer; text-align:center; font-size:16px; color:var(--coral-dark); user-select:none; opacity:.7; }
+  .ing-row.mismatch{ outline:2px solid var(--coral-dark); padding-left:8px; padding-right:8px; }
+  .ing-field{ min-width:0; }
+  .ing-field.full{ grid-column:1/-1; }
+  .ing-mlabel{
+    display:block; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.03em;
+    color:var(--ink-soft); margin-bottom:4px;
+  }
+  .ing-row input{
+    width:100%; font-family:'Nunito',sans-serif; font-weight:600; font-size:13.5px;
+    padding:9px 9px; border:2px solid var(--line); border-radius:8px;
+    background:var(--bg); color:var(--ink); text-align:left; outline:none;
+  }
+  .ing-row input:focus{ background:var(--white); }
+  .qty-unit{ display:flex; gap:6px; }
+  .qty-unit input{ flex:1; min-width:0; }
+  .qty-unit select{
+    flex:0 0 auto; width:78px; font-family:'Nunito',sans-serif; font-weight:700; font-size:12px;
+    padding:8px 4px; border:2px solid var(--line); border-radius:8px;
+    background:var(--white); color:var(--ink);
+  }
+  .ing-row .rm{
+    grid-column:1/-1; text-align:right; cursor:pointer; font-weight:700; font-size:12.5px;
+    color:var(--coral-dark); opacity:.8; user-select:none;
+  }
   .ing-row .rm:hover{ opacity:1; }
+  .unit-warning{
+    grid-column:1/-1; font-size:11.5px; font-weight:700; color:var(--coral-dark); display:none;
+  }
   .add-ing{
     margin-top:10px; background:var(--mint-soft); border:2px dashed var(--line); border-radius:999px;
     font-family:'Baloo 2', sans-serif; font-weight:600; font-size:12.5px; padding:7px 16px; cursor:pointer; color:var(--ink);
@@ -513,9 +543,7 @@ function doGet(e) {
       <div>
         <div class="card">
           <h3><span class="dot" style="background:var(--mint)"></span>Bahan Baku per Resep / Batch</h3>
-          <div class="ing-labels">
-            <span>Bahan</span><span>Harga beli</span><span>Isi beli</span><span>Dipakai</span><span>Yield %</span><span></span>
-          </div>
+          <div class="ing-caption">Pilih satuan sesuai jenis bahan (berat/volume/pcs) — Isi Beli &amp; Dipakai otomatis dikonversi kalau satuannya beda tapi sejenis (mis. kg ↔ gram).</div>
           <div id="ing-list"></div>
           <button class="add-ing" onclick="addIngredient()">+ Tambah bahan</button>
         </div>
@@ -1006,21 +1034,63 @@ function simpanDagang(){
 }
 
 /* ---------- SEKTOR 2: KULINER ---------- */
+const UNITS = {
+  gram:{cat:'Berat', label:'gram', factor:1},
+  kg:{cat:'Berat', label:'kg', factor:1000},
+  ml:{cat:'Volume', label:'ml', factor:1},
+  liter:{cat:'Volume', label:'liter', factor:1000},
+  sdm:{cat:'Volume', label:'sdm', factor:15},
+  sdt:{cat:'Volume', label:'sdt', factor:5},
+  pcs:{cat:'Satuan', label:'pcs', factor:1},
+  butir:{cat:'Satuan', label:'butir', factor:1},
+  lembar:{cat:'Satuan', label:'lembar', factor:1},
+  ikat:{cat:'Satuan', label:'ikat', factor:1}
+};
+function unitOptions(selected){
+  const groups = {};
+  Object.keys(UNITS).forEach(k=>{
+    const u = UNITS[k];
+    (groups[u.cat] = groups[u.cat] || []).push(k);
+  });
+  let html = '';
+  Object.keys(groups).forEach(cat=>{
+    html += `<optgroup label="${cat}">`;
+    groups[cat].forEach(k=>{
+      html += `<option value="${k}" ${k===selected?'selected':''}>${UNITS[k].label}</option>`;
+    });
+    html += `</optgroup>`;
+  });
+  return html;
+}
+
 let ingCount = 0;
 let lastKuliner = null;
-function addIngredient(name, harga, isi, pakai, yieldp){
+function addIngredient(name, harga, isi, isiUnit, pakai, pakaiUnit, yieldp){
   ingCount++;
   const id = 'ing'+ingCount;
   const row = document.createElement('div');
   row.className = 'ing-row';
   row.id = id;
   row.innerHTML = `
-    <input type="text" placeholder="mis. Tepung terigu" value="${name||''}">
-    <input type="text" class="rp-ing" placeholder="10000" value="${harga||''}">
-    <input type="number" placeholder="1000 (gram)" value="${isi||''}">
-    <input type="number" placeholder="200 (gram)" value="${pakai||''}">
-    <input type="number" placeholder="100" value="${yieldp||100}">
-    <span class="rm" onclick="document.getElementById('${id}').remove()">✕</span>
+    <div class="ing-field full"><span class="ing-mlabel">Bahan</span><input type="text" class="name-input" placeholder="mis. Tepung terigu" value="${name||''}"></div>
+    <div class="ing-field"><span class="ing-mlabel">Harga Beli (Rp)</span><input type="text" class="rp-ing" placeholder="10000" value="${harga||''}"></div>
+    <div class="ing-field">
+      <span class="ing-mlabel">Isi Beli</span>
+      <div class="qty-unit">
+        <input type="number" class="qty-isi" placeholder="1000" value="${isi||''}">
+        <select class="unit-isi">${unitOptions(isiUnit||'gram')}</select>
+      </div>
+    </div>
+    <div class="ing-field">
+      <span class="ing-mlabel">Dipakai</span>
+      <div class="qty-unit">
+        <input type="number" class="qty-pakai" placeholder="200" value="${pakai||''}">
+        <select class="unit-pakai">${unitOptions(pakaiUnit||'gram')}</select>
+      </div>
+    </div>
+    <div class="ing-field"><span class="ing-mlabel">Yield %</span><input type="number" class="yield-input" placeholder="100" value="${yieldp||100}"></div>
+    <div class="unit-warning">⚠️ Satuan Isi Beli &amp; Dipakai tidak sejenis — bahan ini tidak ikut dihitung.</div>
+    <span class="rm" onclick="document.getElementById('${id}').remove()">✕ Hapus bahan</span>
   `;
   document.getElementById('ing-list').appendChild(row);
   row.querySelector('.rp-ing').addEventListener('input', function(e){
@@ -1028,25 +1098,39 @@ function addIngredient(name, harga, isi, pakai, yieldp){
     e.target.value = n===0 ? '' : new Intl.NumberFormat('id-ID').format(n);
   });
 }
-addIngredient('Beras', '10000', 1000, 200, 100);
-addIngredient('Ayam', '40000', 1000, 100, 90);
-addIngredient('Bumbu & minyak', '2000', 1, 1, 100);
+addIngredient('Beras', '10000', 1, 'kg', 200, 'gram', 100);
+addIngredient('Ayam', '40000', 1, 'kg', 100, 'gram', 90);
+addIngredient('Bumbu & minyak', '2000', 1, 'pcs', 1, 'pcs', 100);
 
 function hitungKuliner(){
   let totalBahan = 0;
   const bahanSummary = [];
   document.querySelectorAll('#ing-list .ing-row').forEach(row=>{
-    const inputs = row.querySelectorAll('input');
-    const nama = inputs[0].value || 'Bahan';
-    const harga = toNumber(inputs[1].value);
-    const isi = Number(inputs[2].value)||0;
-    const pakai = Number(inputs[3].value)||0;
-    const yieldp = Number(inputs[4].value)||100;
-    if(isi > 0){
-      const hargaSatuan = harga / isi;
-      const biaya = (hargaSatuan * pakai) / (yieldp/100);
+    const nama = row.querySelector('.name-input').value || 'Bahan';
+    const harga = toNumber(row.querySelector('.rp-ing').value);
+    const isi = Number(row.querySelector('.qty-isi').value)||0;
+    const isiUnit = row.querySelector('.unit-isi').value;
+    const pakai = Number(row.querySelector('.qty-pakai').value)||0;
+    const pakaiUnit = row.querySelector('.unit-pakai').value;
+    const yieldp = Number(row.querySelector('.yield-input').value)||100;
+    const warnEl = row.querySelector('.unit-warning');
+
+    const sameCategory = UNITS[isiUnit].cat === UNITS[pakaiUnit].cat;
+    if(!sameCategory){
+      row.classList.add('mismatch');
+      warnEl.style.display = 'block';
+      return;
+    }
+    row.classList.remove('mismatch');
+    warnEl.style.display = 'none';
+
+    const isiBase = isi * UNITS[isiUnit].factor;
+    const pakaiBase = pakai * UNITS[pakaiUnit].factor;
+    if(isiBase > 0){
+      const hargaSatuan = harga / isiBase;
+      const biaya = (hargaSatuan * pakaiBase) / (yieldp/100);
       totalBahan += biaya;
-      bahanSummary.push(nama + ': ' + fmtRp(biaya));
+      bahanSummary.push(nama + ' (' + pakai + ' ' + UNITS[pakaiUnit].label + ' dari ' + isi + ' ' + UNITS[isiUnit].label + '): ' + fmtRp(biaya));
     }
   });
 
