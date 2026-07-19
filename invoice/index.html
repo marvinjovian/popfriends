@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buatin Invoice — Generator Invoice buat Selebgram &amp; Freelancer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="invoice.css">
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="pf-nav">
+    <a href="../" class="brand">🌱 popfriends</a>
+    <div class="links">
+      <a href="../hpp/">🧮 Buku HPP</a>
+      <a href="../resi/">📦 Resi</a>
+      <a href="../invoice/" class="active">🧾 Invoice</a>
+    </div>
+  </nav>
+
+  <header class="top">
+    <div class="badge">🧾 &nbsp;Buatin Invoice</div>
+    <h1>Invoice yang <span class="pop">formal tapi tetep kamu</span></h1>
+    <p>Buat selebgram, content creator, dan freelancer — isi datanya, invoice langsung jadi rapi, tinggal preview PDF terus kirim ke klien.</p>
+  </header>
+
+  <div class="grid-2col">
+    <div>
+      <div class="card">
+        <h3><span class="dot" style="background:var(--sky)"></span>Data Kamu (Pengirim Invoice)</h3>
+        <div class="two-col">
+          <div class="field"><label>Nama / Nama Usaha</label><input type="text" id="iv-nama-dari" placeholder="mis. Marvin Jovian"></div>
+          <div class="field"><label>Email / Kontak</label><input type="text" id="iv-kontak-dari" placeholder="mis. hello@popfriends.id"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot" style="background:var(--mint)"></span>Data Klien</h3>
+        <div class="two-col">
+          <div class="field"><label>Nama Klien / Brand</label><input type="text" id="iv-nama-klien" placeholder="mis. Brand Kosmetik XYZ"></div>
+          <div class="field"><label>Email / Kontak Klien</label><input type="text" id="iv-kontak-klien" placeholder="mis. partnership@brandxyz.com"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot" style="background:var(--peach)"></span>Detail Invoice</h3>
+        <div class="two-col">
+          <div class="field"><label>Tanggal Terbit</label><input type="date" id="iv-tgl-terbit"></div>
+          <div class="field"><label>Jatuh Tempo</label><input type="date" id="iv-tgl-jatuh-tempo"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot" style="background:var(--yellow)"></span>Rincian Pekerjaan</h3>
+        <div id="item-list"></div>
+        <button class="btn-dashed" onclick="ItemRowBuilder.add()">+ Tambah item</button>
+        <div class="field" style="margin-top:16px;">
+          <label>Pajak / PPh (%) — opsional</label>
+          <input type="number" id="iv-pajak" min="0" max="100" value="0">
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="dot" style="background:var(--lilac)"></span>Info Pembayaran &amp; Catatan</h3>
+        <div class="field"><label>Metode / Rekening Pembayaran</label><input type="text" id="iv-rekening" placeholder="mis. BCA 1234567890 a.n. Marvin Jovian"></div>
+        <div class="field"><label>Catatan buat klien (opsional)</label><textarea id="iv-catatan" placeholder="mis. Makasih banyak udah kolaborasi bareng, semoga hasilnya memuaskan!"></textarea></div>
+      </div>
+
+      <button class="btn-primary" onclick="app.buatDariForm()">Buat Invoice →</button>
+    </div>
+
+    <div class="preview-wrap">
+      <div class="preview-placeholder" id="inv-placeholder">
+        Isi data di sebelah kiri, lalu klik "Buat Invoice" — hasilnya muncul di sini 👇
+      </div>
+
+      <div class="preview-box invoice" id="invoice">
+        <div class="inv-head">
+          <div>
+            <div class="brand" id="out-dari-nama">-</div>
+            <div class="brand-sub" id="out-dari-kontak">-</div>
+          </div>
+          <div class="meta">
+            <div class="num" id="out-invnum">#INV-000000</div>
+            <div class="status">Belum Dibayar</div>
+          </div>
+        </div>
+        <div class="inv-body">
+          <div class="inv-parties">
+            <div class="inv-party from">
+              <span class="tag">Dari</span>
+              <p class="name" id="out-dari-nama2">-</p>
+              <p class="line" id="out-dari-kontak2">-</p>
+            </div>
+            <div class="inv-party to">
+              <span class="tag">Untuk</span>
+              <p class="name" id="out-klien-nama">-</p>
+              <p class="line" id="out-klien-kontak">-</p>
+            </div>
+          </div>
+
+          <div class="inv-dates">
+            <div><span>Tanggal Terbit</span><b id="out-tgl-terbit">-</b></div>
+            <div><span>Jatuh Tempo</span><b id="out-tgl-tempo">-</b></div>
+          </div>
+
+          <table class="inv-table">
+            <thead>
+              <tr><th>Deskripsi Pekerjaan</th><th class="num">Qty</th><th class="num">Harga</th><th class="num">Subtotal</th></tr>
+            </thead>
+            <tbody id="out-items"></tbody>
+          </table>
+
+          <div class="inv-totals">
+            <div class="row"><span>Subtotal</span><span id="out-subtotal">Rp 0</span></div>
+            <div class="row" id="out-pajak-row"><span id="out-pajak-label">Pajak (0%)</span><span id="out-pajak">Rp 0</span></div>
+            <div class="row grand"><span>Total</span><span id="out-total">Rp 0</span></div>
+          </div>
+
+          <div class="inv-note" id="out-catatan-wrap" style="display:none;">
+            💬 <span id="out-catatan"></span>
+          </div>
+
+          <div class="inv-payment">
+            <b>Pembayaran:</b> <span id="out-rekening">-</span>
+          </div>
+        </div>
+        <div class="inv-foot">Makasih udah kolaborasi ✨ — dibuat via Buatin Invoice</div>
+      </div>
+
+      <div class="action-row" id="action-row" style="display:none;">
+        <button class="action-btn" onclick="app.previewPDF()">📄 Preview PDF</button>
+        <button class="action-btn" onclick="app.saveAsImage()">💾 Save Gambar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="pf-footer">
+    Semua data cuma dipakai buat bikin invoice yang kamu simpan/print sendiri — nggak ada yang dikirim ke server mana pun.
+  </footer>
+</div>
+
+<div class="pf-toast" id="pf-toast"></div>
+
+<script src="../shared/utils.js"></script>
+<script src="invoice.js"></script>
+</body>
+</html>
