@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kalkulator HPP — 3 Sektor Usaha Terbesar Indonesia</title>
+<title>Marvin Jovian — Profil</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#FBF7F0;
@@ -26,1210 +26,246 @@
     --white:#FFFFFF;
     --r-lg:22px;
     --r-md:16px;
-    --r-sm:10px;
     --shadow: 4px 4px 0 var(--line);
     --shadow-sm: 3px 3px 0 var(--line);
   }
   *{ box-sizing:border-box; }
-  html,body{
-    margin:0; padding:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Nunito', sans-serif;
-  }
-  h1,h2,h3,.display{ font-family:'Baloo 2', sans-serif; }
+  html{ scroll-behavior:smooth; }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:'Nunito', sans-serif; }
+  h1,h2,h3{ font-family:'Baloo 2', sans-serif; }
 
-  .wrap{ max-width:1080px; margin:0 auto; padding:40px 20px 90px; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:0 20px; }
 
-  header.top{ text-align:center; margin-bottom:24px; }
-  header.top .badge{
-    display:inline-flex; align-items:center; gap:8px;
-    background:var(--white); border:2.5px solid var(--line);
-    border-radius:999px; padding:6px 16px;
-    font-weight:700; font-size:12.5px; letter-spacing:.02em;
-    box-shadow:var(--shadow-sm);
-    margin-bottom:16px;
+  /* ---------- nav ---------- */
+  nav.top{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 0;
   }
-  header.top h1{
-    font-size:clamp(30px,5vw,46px);
-    font-weight:800;
-    margin:0 0 10px;
-    line-height:1.1;
+  nav.top .brand{ font-family:'Baloo 2',sans-serif; font-weight:800; font-size:19px; }
+  nav.top .links{ display:flex; gap:6px; }
+  nav.top a{
+    text-decoration:none; color:var(--ink); font-weight:700; font-size:13.5px;
+    background:var(--white); border:2px solid var(--line); border-radius:999px;
+    padding:8px 16px; box-shadow:var(--shadow-sm); transition:transform .1s;
   }
-  header.top h1 .pop{ color:var(--coral-dark); }
-  header.top p{
-    max-width:560px; margin:0 auto; color:var(--ink-soft);
-    font-size:15px; line-height:1.6; font-weight:600;
-  }
+  nav.top a:hover{ transform:translateY(-2px); }
 
-  /* ---------- google sheets panel ---------- */
-  .sheets-panel{
-    background:var(--lilac-soft);
-    border:2.5px solid var(--line);
-    border-radius:var(--r-lg);
-    box-shadow:var(--shadow);
-    padding:18px 22px;
-    margin:28px 0;
+  /* ---------- hero ---------- */
+  .hero{
+    text-align:center; padding:50px 0 60px;
   }
-  .sheets-head{ display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .sheets-head .ic{
-    width:36px; height:36px; border-radius:50%; background:var(--lilac);
-    border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:17px;
+  .avatar{
+    width:120px; height:120px; border-radius:50%;
+    background:var(--peach); border:3px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Baloo 2',sans-serif; font-weight:800; font-size:38px;
+    margin:0 auto 22px; box-shadow:var(--shadow);
+    transform:rotate(-3deg);
   }
-  .sheets-head h3{ margin:0; font-size:16px; font-weight:700; }
-  .sheets-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-  .sheets-row input[type=text]{
-    flex:1; min-width:220px;
-    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
-    padding:10px 12px; border:2px solid var(--line); border-radius:var(--r-sm);
-    background:var(--white); color:var(--ink);
+  .hero .wave{ font-size:22px; }
+  .hero h1{ font-size:clamp(32px,6vw,50px); font-weight:800; margin:0 0 10px; }
+  .hero .tagline{
+    max-width:520px; margin:0 auto 22px; font-size:16px; font-weight:700;
+    color:var(--ink-soft); line-height:1.6;
   }
-  .mini-btn{
-    background:var(--ink); color:var(--white); border:2.5px solid var(--line);
-    border-radius:999px; font-family:'Baloo 2',sans-serif; font-weight:700;
-    font-size:13px; padding:9px 18px; cursor:pointer; box-shadow:var(--shadow-sm);
+  .hero .cta{
+    display:inline-block; background:var(--coral); color:var(--white);
+    border:2.5px solid var(--line); border-radius:999px; padding:13px 26px;
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:15px;
+    text-decoration:none; box-shadow:var(--shadow); transition:transform .08s, box-shadow .08s;
   }
-  .mini-btn:active{ transform:translate(2px,2px); box-shadow:none; }
-  .sheet-status{ font-size:12px; font-weight:800; white-space:nowrap; color:var(--coral-dark); }
+  .hero .cta:hover{ background:var(--coral-dark); }
+  .hero .cta:active{ transform:translate(3px,3px); box-shadow:none; }
 
-  .nama-row{ margin-top:12px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  .nama-row label{ font-size:13px; font-weight:700; color:var(--ink-soft); }
-  .nama-row input{
-    font-family:'Nunito',sans-serif; font-weight:700; font-size:13.5px;
-    padding:8px 12px; border:2px solid var(--line); border-radius:var(--r-sm);
-    background:var(--white); min-width:200px;
-  }
-
-  .link-toggle{
-    background:none; border:none; margin-top:12px;
-    font-family:'Baloo 2',sans-serif; font-weight:600; font-size:13px;
-    color:var(--ink-soft); text-decoration:underline; cursor:pointer; padding:0;
-  }
-  .guide{
-    margin-top:14px; padding-top:14px; border-top:2px dashed var(--line);
-    font-size:13.5px; line-height:1.7; font-weight:600; color:var(--ink);
-  }
-  .guide ol{ padding-left:20px; margin:0 0 12px; }
-  .guide code{
-    background:var(--white); border:1.5px solid var(--line); border-radius:6px;
-    padding:1px 6px; font-family:'IBM Plex Mono',monospace; font-size:12px;
-  }
-  .code-box{
-    background:#1E1B27; color:#EFE9FF; border:2.5px solid var(--line);
-    border-radius:var(--r-md); padding:14px 16px; position:relative;
-    max-height:220px; overflow:auto;
-  }
-  .code-box pre{
-    margin:0; font-family:'IBM Plex Mono',monospace; font-size:11.5px; line-height:1.6;
-    white-space:pre-wrap; word-break:break-word;
-  }
-  .copy-btn{
-    position:sticky; top:0; float:right;
-    background:var(--yellow); border:2px solid var(--line); border-radius:999px;
-    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:11.5px;
-    padding:6px 12px; cursor:pointer; margin-bottom:8px;
-  }
-
-  .nav{ display:flex; justify-content:center; gap:12px; margin:26px 0 30px; flex-wrap:wrap; }
-  .nav-btn{
+  /* ---------- section shell ---------- */
+  section{ padding:36px 0; }
+  section h2{
+    font-size:24px; font-weight:700; margin:0 0 6px;
     display:flex; align-items:center; gap:10px;
+  }
+  section h2 .ic{
+    width:38px; height:38px; border-radius:50%; border:2.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0;
+  }
+  section .lead{ color:var(--ink-soft); font-weight:700; font-size:13.5px; margin-bottom:20px; }
+
+  /* ---------- about card ---------- */
+  .about-card{
+    background:var(--white); border:2.5px solid var(--line); border-radius:var(--r-lg);
+    box-shadow:var(--shadow); padding:26px 28px; font-size:15px; line-height:1.75; font-weight:600;
+  }
+  .about-card p{ margin:0 0 14px; }
+  .about-card p:last-child{ margin-bottom:0; }
+  .about-card .highlight{
+    background:var(--yellow); padding:1px 6px; border-radius:6px; font-weight:800;
+  }
+
+  /* ---------- interest grid ---------- */
+  .grid3{ display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:18px; }
+  .int-card{
+    background:var(--white); border:2.5px solid var(--line); border-radius:var(--r-md);
+    box-shadow:var(--shadow-sm); padding:20px; transition:transform .1s;
+  }
+  .int-card:hover{ transform:translateY(-3px); }
+  .int-card .ic{
+    width:44px; height:44px; border-radius:50%; border:2px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:12px;
+  }
+  .int-card h3{ font-size:15.5px; font-weight:700; margin:0 0 6px; }
+  .int-card p{ font-size:12.5px; color:var(--ink-soft); font-weight:600; margin:0; line-height:1.5; }
+
+  /* ---------- project cards ---------- */
+  .proj-card{
+    display:flex; align-items:center; gap:16px;
+    background:var(--white); border:2.5px solid var(--line); border-radius:var(--r-md);
+    box-shadow:var(--shadow-sm); padding:18px 20px; margin-bottom:14px;
+    text-decoration:none; color:var(--ink); transition:transform .1s;
+  }
+  .proj-card:hover{ transform:translateX(4px); }
+  .proj-card .ic{
+    width:50px; height:50px; border-radius:50%; border:2.5px solid var(--line);
+    display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;
+  }
+  .proj-card .info h3{ margin:0 0 3px; font-size:16px; font-weight:700; }
+  .proj-card .info p{ margin:0; font-size:12.5px; color:var(--ink-soft); font-weight:600; }
+  .proj-card .arrow{ margin-left:auto; font-size:18px; flex-shrink:0; }
+  .proj-note{
+    font-size:11.5px; font-weight:700; color:var(--ink-soft); font-style:italic; margin-top:6px;
+  }
+
+  /* ---------- contact ---------- */
+  .contact-card{
+    background:var(--lilac-soft); border:2.5px solid var(--line); border-radius:var(--r-lg);
+    box-shadow:var(--shadow); padding:28px; text-align:center;
+  }
+  .contact-card p{ font-weight:700; color:var(--ink-soft); margin:0 0 18px; font-size:14px; }
+  .contact-row{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .contact-row a{
+    display:inline-flex; align-items:center; gap:8px;
     background:var(--white); border:2.5px solid var(--line); border-radius:999px;
-    padding:10px 20px 10px 10px; cursor:pointer;
-    font-family:'Baloo 2', sans-serif; font-weight:600; font-size:15px; color:var(--ink);
-    box-shadow:var(--shadow-sm); transition: transform .12s, box-shadow .12s;
+    padding:10px 18px; text-decoration:none; color:var(--ink);
+    font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14px;
+    box-shadow:var(--shadow-sm); transition:transform .1s;
   }
-  .nav-btn .icon{
-    width:34px; height:34px; border-radius:50%; border:2px solid var(--line);
-    display:flex; align-items:center; justify-content:center; font-size:17px;
-  }
-  .nav-btn:hover{ transform:translateY(-2px); }
-  .nav-btn.active{ transform:translate(2px,2px); box-shadow:none; }
-  .nav-btn[data-c="peach"] .icon{ background:var(--peach); }
-  .nav-btn[data-c="mint"] .icon{ background:var(--mint); }
-  .nav-btn[data-c="sky"] .icon{ background:var(--sky); }
-  .nav-btn[data-c="lilac"] .icon{ background:var(--lilac); }
-  .nav-btn[data-c="peach"].active{ background:var(--peach-soft); }
-  .nav-btn[data-c="mint"].active{ background:var(--mint-soft); }
-  .nav-btn[data-c="sky"].active{ background:var(--sky-soft); }
-  .nav-btn[data-c="lilac"].active{ background:var(--lilac-soft); }
-
-  .hist-table{ width:100%; border-collapse:collapse; font-size:12.5px; }
-  .hist-table th{ text-align:left; padding:9px 8px; border-bottom:2.5px solid var(--line); font-family:'Baloo 2',sans-serif; }
-  .hist-table td{ padding:9px 8px; border-bottom:1.5px dotted #E4DCC9; font-weight:600; }
-  .hist-empty{ text-align:center; padding:26px 10px; font-weight:700; color:var(--ink-soft); }
-  .hist-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
-  .file-btn{
-    display:inline-flex; align-items:center; gap:6px; cursor:pointer;
-    background:var(--ink); color:var(--white); border:2.5px solid var(--line);
-    border-radius:999px; font-family:'Baloo 2',sans-serif; font-weight:700;
-    font-size:13px; padding:9px 18px; box-shadow:var(--shadow-sm);
-  }
-  .file-btn.danger{ background:var(--coral-dark); }
-
-  .page{ display:none; }
-  .page.active{ display:block; animation:fadeUp .3s ease; }
-  @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
-
-  .sector-intro{ display:flex; align-items:center; gap:16px; margin-bottom:20px; }
-  .sector-intro .big-icon{
-    width:58px; height:58px; border-radius:50%; border:2.5px solid var(--line);
-    display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0;
-  }
-  .sector-intro h2{ margin:0 0 2px; font-size:24px; font-weight:700; }
-  .sector-intro .meta{ font-size:13px; color:var(--ink-soft); font-weight:700; }
-  .formula-chip{
-    display:inline-block; margin-top:8px; background:var(--white); border:2px dashed var(--line);
-    border-radius:999px; padding:6px 14px; font-size:12.5px; font-weight:700; color:var(--ink-soft);
-  }
-
-  .grid{ display:grid; grid-template-columns: 1.2fr 0.9fr; gap:24px; align-items:start; }
-  @media (max-width:880px){ .grid{ grid-template-columns:1fr; } }
-
-  .card{
-    background:var(--white); border:2.5px solid var(--line); border-radius:var(--r-lg);
-    box-shadow:var(--shadow); padding:22px 24px; margin-bottom:20px;
-  }
-  .card h3{ margin:0 0 14px; font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px; }
-  .card h3 .dot{ width:10px; height:10px; border-radius:50%; border:1.5px solid var(--line); }
-
-  .row{ display:flex; align-items:center; gap:12px; padding:8px 0; }
-  .row label{ flex:1; font-size:13.5px; font-weight:700; color:var(--ink); }
-  .row .hint{ display:block; font-size:11px; font-weight:600; color:var(--ink-soft); margin-top:1px; }
-  .row .rp-wrap{ position:relative; width:150px; flex-shrink:0; }
-  .row .rp-wrap span.prefix{
-    position:absolute; left:12px; top:50%; transform:translateY(-50%);
-    font-size:12px; font-weight:700; color:var(--ink-soft);
-  }
-  input.rp-input, input[type=number]{
-    width:100%; font-family:'Nunito', sans-serif; font-weight:700; font-size:14px; text-align:right;
-    padding:9px 10px 9px 30px; border:2px solid var(--line); border-radius:var(--r-sm);
-    background:var(--bg); color:var(--ink); outline:none;
-  }
-  input.pct{ padding-left:10px; }
-  input:focus{ background:var(--white); box-shadow:2px 2px 0 var(--line); }
-
-  .ing-caption{
-    font-size:11.5px; font-weight:600; color:var(--ink-soft); font-style:italic;
-    margin-bottom:10px;
-  }
-  .ing-row{
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(118px,1fr));
-    gap:10px 14px;
-    padding:14px 0;
-    border-bottom:1.5px dashed var(--line);
-    align-items:end;
-    transition: outline .15s;
-    border-radius:10px;
-  }
-  .ing-row.mismatch{ outline:2px solid var(--coral-dark); padding-left:8px; padding-right:8px; }
-  .ing-field{ min-width:0; }
-  .ing-field.full{ grid-column:1/-1; }
-  .ing-mlabel{
-    display:block; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.03em;
-    color:var(--ink-soft); margin-bottom:4px;
-  }
-  .ing-row input{
-    width:100%; font-family:'Nunito',sans-serif; font-weight:600; font-size:13.5px;
-    padding:9px 9px; border:2px solid var(--line); border-radius:8px;
-    background:var(--bg); color:var(--ink); text-align:left; outline:none;
-  }
-  .ing-row input:focus{ background:var(--white); }
-  .qty-unit{ display:flex; gap:6px; }
-  .qty-unit input{ flex:1; min-width:0; }
-  .qty-unit select{
-    flex:0 0 auto; width:78px; font-family:'Nunito',sans-serif; font-weight:700; font-size:12px;
-    padding:8px 4px; border:2px solid var(--line); border-radius:8px;
-    background:var(--white); color:var(--ink);
-  }
-  .ing-row .rm{
-    grid-column:1/-1; text-align:right; cursor:pointer; font-weight:700; font-size:12.5px;
-    color:var(--coral-dark); opacity:.8; user-select:none;
-  }
-  .ing-row .rm:hover{ opacity:1; }
-  .unit-warning{
-    grid-column:1/-1; font-size:11.5px; font-weight:700; color:var(--coral-dark); display:none;
-  }
-  .add-ing{
-    margin-top:10px; background:var(--mint-soft); border:2px dashed var(--line); border-radius:999px;
-    font-family:'Baloo 2', sans-serif; font-weight:600; font-size:12.5px; padding:7px 16px; cursor:pointer; color:var(--ink);
-  }
-  .add-ing:hover{ background:var(--mint); }
-
-  .calc-btn{
-    display:block; width:100%; background:var(--coral); color:var(--white); border:2.5px solid var(--line);
-    border-radius:999px; font-family:'Baloo 2', sans-serif; font-weight:700; font-size:16px; padding:14px;
-    cursor:pointer; box-shadow:var(--shadow); transition: transform .08s, box-shadow .08s;
-  }
-  .calc-btn:hover{ background:var(--coral-dark); }
-  .calc-btn:active{ transform:translate(3px,3px); box-shadow:none; }
-
-  .save-btn{
-    display:flex; align-items:center; justify-content:center; gap:8px;
-    width:100%; margin-top:10px;
-    background:var(--white); color:var(--ink); border:2.5px dashed var(--line);
-    border-radius:999px; font-family:'Baloo 2', sans-serif; font-weight:700; font-size:14.5px; padding:11px;
-    cursor:pointer;
-  }
-  .save-btn:hover{ background:var(--lilac-soft); }
-  .save-btn:active{ transform:translate(2px,2px); }
-
-  .summary-card{
-    background:var(--white); border:2.5px solid var(--line); border-radius:var(--r-lg);
-    padding:16px 20px; box-shadow:var(--shadow); font-size:13px; font-weight:700; margin-bottom:20px;
-  }
-  .summary-card .line{ display:flex; justify-content:space-between; padding:6px 0; border-bottom:2px dotted #E4DCC9; }
-  .summary-card .line.total{ border-bottom:none; border-top:2.5px solid var(--line); margin-top:4px; padding-top:10px; font-size:14.5px; }
-  .summary-card .neg{ color:var(--coral-dark); }
-
-  .tag-area{ display:flex; justify-content:center; margin:8px 0 20px; min-height:190px; align-items:center; }
-  .placeholder-note{ font-size:13px; font-weight:700; color:var(--ink-soft); text-align:center; max-width:210px; }
-  .tag{
-    position:relative; background:var(--yellow); border:3px solid var(--line); border-radius:var(--r-md);
-    padding:20px 26px 18px; text-align:center; transform:rotate(-4deg) scale(0.5); opacity:0; box-shadow:var(--shadow);
-  }
-  .tag::before{
-    content:""; position:absolute; top:-11px; left:22px; width:16px; height:16px;
-    background:var(--bg); border:3px solid var(--line); border-radius:50%;
-  }
-  .tag.show{ animation:tagPop .45s cubic-bezier(.25,1.6,.4,1) forwards; }
-  @keyframes tagPop{
-    0%{ opacity:0; transform:rotate(-4deg) scale(0.4); }
-    60%{ opacity:1; transform:rotate(-4deg) scale(1.06); }
-    100%{ opacity:1; transform:rotate(-4deg) scale(1); }
-  }
-  .tag .label{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-soft); }
-  .tag .value{ font-family:'Baloo 2',sans-serif; font-size:28px; font-weight:800; margin:4px 0; white-space:nowrap; color:var(--ink); }
-  .tag .sub{ font-size:11.5px; font-weight:700; color:var(--ink-soft); }
-
-  .jual-card{ background:var(--mint-soft); border:2.5px solid var(--line); border-radius:var(--r-lg); padding:18px 20px; box-shadow:var(--shadow); }
-  .jual-card h4{ margin:0 0 10px; font-family:'Baloo 2',sans-serif; font-size:14px; font-weight:700; }
-  .jual-card .row .rp-wrap{ width:95px; }
-  .jual-result{ font-family:'Baloo 2',sans-serif; font-size:22px; font-weight:800; color:#1E7A57; margin-top:8px; }
-  .benchmark{ margin-top:10px; font-size:11.5px; font-weight:600; color:var(--ink-soft); line-height:1.5; }
+  .contact-row a:hover{ transform:translateY(-2px); }
 
   footer{
-    max-width:1080px; margin:36px auto 0; padding:0 20px;
-    color:var(--ink-soft); font-size:12px; font-weight:700; text-align:center; line-height:1.7;
+    text-align:center; padding:30px 0 40px; color:var(--ink-soft);
+    font-size:12px; font-weight:700;
   }
 
-  .toast{
-    position:fixed; left:50%; bottom:26px; transform:translate(-50%,20px);
-    background:var(--ink); color:var(--white); font-family:'Baloo 2',sans-serif; font-weight:700; font-size:14px;
-    padding:12px 22px; border-radius:999px; box-shadow:0 6px 20px rgba(0,0,0,.25);
-    opacity:0; pointer-events:none; transition:all .25s ease; z-index:999;
+  @media (max-width:600px){
+    nav.top .links{ display:none; }
   }
-  .toast.show{ opacity:1; transform:translate(-50%,0); }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <header class="top">
-    <div class="badge">🧮 &nbsp;Kalkulator HPP untuk UMKM</div>
-    <h1>Hitung HPP-mu <span class="pop">tanpa pusing</span></h1>
-    <p>Tiga kalkulator terpisah untuk tiga sektor usaha terbesar di Indonesia — masing-masing pakai cara hitung yang memang berbeda. Isi angkanya, langsung dapat HPP dan saran harga jual — lalu simpan ke Google Sheets-mu sendiri.</p>
-  </header>
-
-  <div class="sheets-panel">
-    <div class="sheets-head">
-      <div class="ic">📊</div>
-      <h3>Sambungkan ke Google Sheets-mu</h3>
+  <nav class="top">
+    <div class="brand">🌱 popfriends</div>
+    <div class="links">
+      <a href="#tentang">Tentang</a>
+      <a href="#eksplor">Eksplor</a>
+      <a href="#proyek">Proyek</a>
+      <a href="#kontak">Kontak</a>
     </div>
-    <div class="sheets-row">
-      <input type="text" id="sheet-url" placeholder="Tempel URL Web App Google Sheets di sini (lihat cara di bawah)…">
-      <button class="mini-btn" onclick="saveSheetUrl()">Simpan</button>
-      <span class="sheet-status" id="sheet-status">Belum tersambung</span>
-    </div>
-    <div class="nama-row">
-      <label>Nama usaha / klien (ikut tersimpan di tiap baris):</label>
-      <input type="text" id="nama-usaha" placeholder="mis. Toko Barokah">
-    </div>
-    <button class="link-toggle" onclick="toggleGuide()" id="guide-toggle">Belum punya Sheets-nya? Lihat cara sambungkan (5 menit) ⌄</button>
-    <div class="guide" id="guide" style="display:none">
-      <ol>
-        <li>Buat <strong>Google Sheet baru</strong> (spreadsheet kosong) di Google Drive-mu — atau langsung pakai <strong>Template Sheets HPP</strong> yang sudah disediakan (lihat tautan unduhan di bawah kode), lalu upload ke Drive dan buka dengan Google Sheets.</li>
-        <li>Buka menu <code>Extensions</code> → <code>Apps Script</code>.</li>
-        <li>Hapus semua kode yang ada, lalu tempel kode di bawah ini (tombol salin di kanan atas).</li>
-        <li>Klik <code>Deploy</code> → <code>New deployment</code> → pilih tipe <code>Web app</code>. Isi <em>Execute as</em>: <strong>Me</strong>, dan <em>Who has access</em>: <strong>Anyone</strong>. Klik <code>Deploy</code>.</li>
-        <li>Salin <strong>Web app URL</strong> yang muncul, tempel di kotak di atas, lalu klik <em>Simpan</em>.</li>
-        <li>Kembali ke Sheets-nya, refresh halaman — akan muncul menu baru <strong>📊 Buku HPP</strong> di menu bar. Klik <strong>🎨 Setup Template Otomatis</strong> untuk memberi warna header dan merapikan kolom secara otomatis.</li>
-        <li>Untuk grafik tren HPP: blok kolom <code>waktu</code> dan kolom HPP (mis. <code>hpp</code> atau <code>hpp_per_porsi</code>) → <code>Insert</code> → <code>Chart</code>. Setiap menambah baris baru, buka grafiknya → titik tiga → <em>Edit chart</em> → perluas rentang data agar ikut ter-plot.</li>
-      </ol>
-      <div class="code-box">
-        <button class="copy-btn" onclick="copyCode()">📋 Salin kode</button>
-        <pre id="gs-code">function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu('📊 Buku HPP')
-    .addItem('🎨 Setup Template Otomatis', 'setupTemplate')
-    .addToUi();
-}
-
-function setupTemplate() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sektor = {
-    'Dagang': '#FFD9B8',
-    'Kuliner': '#BFEFDA',
-    'Manufaktur': '#C9DFFC'
-  };
-  Object.keys(sektor).forEach(function (nama) {
-    var sheet = ss.getSheetByName(nama);
-    if (!sheet) sheet = ss.insertSheet(nama);
-    formatSheet(sheet, sektor[nama]);
-  });
-  SpreadsheetApp.getUi().alert(
-    'Template siap! 3 tab (Dagang, Kuliner, Manufaktur) sudah diformat.\\n\\n' +
-    'Untuk grafik tren HPP: blok kolom waktu + kolom HPP, lalu Insert > Chart.'
-  );
-}
-
-function formatSheet(sheet, warna) {
-  var lastCol = Math.max(sheet.getLastColumn(), 1);
-  if (sheet.getLastRow() > 0) {
-    var header = sheet.getRange(1, 1, 1, lastCol);
-    header.setBackground(warna).setFontWeight('bold').setHorizontalAlignment('center');
-  }
-  sheet.setFrozenRows(1);
-  sheet.autoResizeColumns(1, Math.max(lastCol, 10));
-}
-
-function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheetName = data.sektor || 'Riwayat';
-    var sheet = ss.getSheetByName(sheetName);
-    if (!sheet) {
-      sheet = ss.insertSheet(sheetName);
-    }
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(Object.keys(data));
-    }
-    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    var row = headers.map(function(h) {
-      return data[h] !== undefined ? data[h] : '';
-    });
-    sheet.appendRow(row);
-    return ContentService.createTextOutput(JSON.stringify({status: 'ok'}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({status: 'error', message: String(err)}))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  return ContentService.createTextOutput('Buku HPP Sheets Endpoint aktif ✅');
-}</pre>
-      </div>
-      <p style="margin-top:10px; font-size:12.5px;">Data tersimpan langsung ke akun Google-mu sendiri — tidak lewat server pihak ketiga mana pun. Tiap sektor otomatis masuk ke tab (sheet) sendiri: <code>Dagang</code>, <code>Kuliner</code>, <code>Manufaktur</code>.</p>
-      <p style="margin-top:6px; font-size:12.5px;">Tidak mau ribet bikin sheet dari nol? Unduh <strong>Template-Sheets-HPP.xlsx</strong> (sudah ada rumus, warna header, dan contoh grafik) dari halaman tempat kamu mendapatkan situs ini, lalu upload ke Google Drive.</p>
-    </div>
-  </div>
-
-  <nav class="nav">
-    <button class="nav-btn active" data-c="peach" data-page="page-dagang" onclick="showPage('page-dagang', this)">
-      <span class="icon">🛍️</span> Dagang &amp; Eceran
-    </button>
-    <button class="nav-btn" data-c="mint" data-page="page-kuliner" onclick="showPage('page-kuliner', this)">
-      <span class="icon">🍲</span> Kuliner &amp; F&amp;B
-    </button>
-    <button class="nav-btn" data-c="sky" data-page="page-manufaktur" onclick="showPage('page-manufaktur', this)">
-      <span class="icon">🏭</span> Manufaktur
-    </button>
-    <button class="nav-btn" data-c="lilac" data-page="page-riwayat" onclick="showPage('page-riwayat', this)">
-      <span class="icon">📁</span> Riwayat Lokal
-    </button>
   </nav>
 
-  <section class="page active" id="page-dagang">
-    <div class="sector-intro">
-      <div class="big-icon" style="background:var(--peach)">🛍️</div>
-      <div>
-        <h2>Perdagangan &amp; Eceran</h2>
-        <div class="meta">Toko, warung, reseller, distributor · sektor terbesar, 14,44 juta unit usaha</div>
-        <div class="formula-chip">HPP = Persediaan Awal + Pembelian Bersih − Persediaan Akhir</div>
-      </div>
+  <div class="hero">
+    <div class="avatar">MJ</div>
+    <h1>Halo, gue Marvin Jovian <span class="wave">👋</span></h1>
+    <p class="tagline">Orangnya gampang penasaran — suka nyobain hal baru dulu, baru mikirin nanti jadi apa. Dari nulis, ngulik teknologi, sampai bangun usaha kecil-kecilan.</p>
+    <a href="#tentang" class="cta">Kenalan dikit yuk ↓</a>
+  </div>
+
+  <section id="tentang">
+    <h2><span class="ic">🙋</span>Tentang Gue</h2>
+    <div class="about-card">
+      <p>Gue bukan tipe yang nyaman diam di satu jalur doang. Kadang lagi fokus nulis, kadang lagi ngoprek proyek digital, kadang lagi mikirin cara jualan yang lebih rapi — dan semuanya jalan bareng, bukan gantian.</p>
+      <p>Buat gue, <span class="highlight">mencoba itu bagian dari belajar</span> — nggak semua hal harus langsung jadi karier atau langsung berhasil. Yang penting jalan dulu, ambil pelajarannya, terus lanjut ke hal berikutnya.</p>
+      <p>Halaman ini semacam etalase kecil dari apa yang lagi gue kerjain dan pelajarin — anggap aja ruang buat orang lain ikut lihat prosesnya, bukan cuma hasil akhirnya.</p>
     </div>
+  </section>
 
-    <div class="grid">
-      <div>
-        <div class="card">
-          <h3><span class="dot" style="background:var(--peach)"></span>Persediaan Barang</h3>
-          <div class="row">
-            <label>Persediaan awal<span class="hint">nilai stok di awal periode</span></label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_awal" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Persediaan akhir<span class="hint">nilai stok tersisa di akhir periode</span></label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_akhir" type="text" value="0"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3><span class="dot" style="background:var(--peach)"></span>Pembelian Bersih</h3>
-          <div class="row">
-            <label>Total pembelian barang</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_pembelian" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Ongkos angkut pembelian</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_ongkos" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Retur pembelian</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_retur" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Potongan / diskon pembelian</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_potongan" type="text" value="0"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3><span class="dot" style="background:var(--peach)"></span>Opsional: HPP per Unit</h3>
-          <div class="row">
-            <label>Jumlah unit terjual periode ini</label>
-            <div class="rp-wrap"><span class="prefix">#</span><input type="number" min="0" data-k="dg_unit" value="0"></div>
-          </div>
-        </div>
-
-        <button class="calc-btn" onclick="hitungDagang()">Hitung HPP →</button>
+  <section id="eksplor">
+    <h2><span class="ic">✨</span>Yang Lagi Gue Eksplor</h2>
+    <div class="lead">Nggak dalam urutan prioritas — semuanya jalan bareng.</div>
+    <div class="grid3">
+      <div class="int-card">
+        <div class="ic" style="background:var(--peach)">✍️</div>
+        <h3>Nulis &amp; Puisi</h3>
+        <p>Nyusun kata jadi sesuatu yang punya rasa, bukan cuma rapi secara tata bahasa.</p>
       </div>
-
-      <div>
-        <div class="summary-card" id="dg-summary">
-          <div class="line"><span>Pembelian bersih</span><span id="dg-pb">Rp 0</span></div>
-          <div class="line"><span>+ Persediaan awal</span><span id="dg-awal-o">Rp 0</span></div>
-          <div class="line"><span>− Persediaan akhir</span><span class="neg" id="dg-akhir-o">Rp 0</span></div>
-          <div class="line total"><span>HPP</span><span id="dg-hpp-o">Rp 0</span></div>
-        </div>
-
-        <div class="tag-area">
-          <div class="placeholder-note" id="dg-placeholder">Isi angka di sebelah kiri lalu tekan "Hitung HPP" — hasilnya muncul di sini 👇</div>
-          <div class="tag" id="dg-stamp">
-            <div class="label">HPP Periode Ini</div>
-            <div class="value" id="dg-stamp-val">Rp 0</div>
-            <div class="sub" id="dg-stamp-sub">per unit: Rp 0</div>
-          </div>
-        </div>
-
-        <div class="jual-card">
-          <h4>💡 Saran Harga Jual</h4>
-          <div class="row">
-            <label>Markup dari HPP per unit</label>
-            <div class="rp-wrap"><span class="prefix">%</span><input class="pct" type="number" min="0" data-k="dg_markup" value="30"></div>
-          </div>
-          <div class="jual-result" id="dg-jual">Rp 0 / unit</div>
-          <div class="benchmark">Markup lazim ritel/reseller: 20–50% dari HPP, tergantung kategori barang &amp; perputaran stok.</div>
-        </div>
-
-        <button class="save-btn" onclick="simpanDagang()">💾 Simpan hasil ke Google Sheets</button>
+      <div class="int-card">
+        <div class="ic" style="background:var(--mint)">🤖</div>
+        <h3>Ngulik AI &amp; Teknologi</h3>
+        <p>Coba-coba bikin alat kecil yang beneran kepake, bukan cuma buat pamer.</p>
+      </div>
+      <div class="int-card">
+        <div class="ic" style="background:var(--sky)">🛍️</div>
+        <h3>Bangun Usaha Kecil</h3>
+        <p>Belajar jualan, ngatur harga, sampai ngerti angka-angka di baliknya.</p>
+      </div>
+      <div class="int-card">
+        <div class="ic" style="background:var(--lilac)">🎨</div>
+        <h3>Desain &amp; Visual</h3>
+        <p>Suka mikirin tampilan yang enak dilihat tapi tetap gampang dipakai.</p>
+      </div>
+      <div class="int-card">
+        <div class="ic" style="background:var(--yellow)">📊</div>
+        <h3>Angka &amp; Data</h3>
+        <p>Ternyata seru juga ngulik hitung-hitungan kalau tahu buat apa gunanya.</p>
+      </div>
+      <div class="int-card">
+        <div class="ic" style="background:var(--peach-soft)">🌏</div>
+        <h3>Pengalaman Baru</h3>
+        <p>Selalu ada slot buat nyoba hal yang belum pernah gue sentuh sama sekali.</p>
       </div>
     </div>
   </section>
 
-  <section class="page" id="page-kuliner">
-    <div class="sector-intro">
-      <div class="big-icon" style="background:var(--mint)">🍲</div>
-      <div>
-        <h2>Kuliner &amp; Akomodasi (F&amp;B)</h2>
-        <div class="meta">Warung makan, kafe, katering, minuman kekinian · 6,41 juta unit usaha</div>
-        <div class="formula-chip">HPP per Porsi = (Bahan Baku + Tenaga Kerja + Overhead) ÷ Jumlah Porsi</div>
+  <section id="proyek">
+    <h2><span class="ic">🚀</span>Proyek yang Lagi Jalan</h2>
+    <div class="lead">Beberapa hal kecil yang lagi gue bangun — klik buat lihat langsung.</div>
+
+    <a href="https://hpp.popfriends.id" class="proj-card">
+      <div class="ic" style="background:var(--mint)">🧮</div>
+      <div class="info">
+        <h3>Buku HPP</h3>
+        <p>Kalkulator harga pokok penjualan buat 3 sektor usaha terbesar di Indonesia.</p>
       </div>
-    </div>
+      <span class="arrow">→</span>
+    </a>
 
-    <div class="grid">
-      <div>
-        <div class="card">
-          <h3><span class="dot" style="background:var(--mint)"></span>Bahan Baku per Resep / Batch</h3>
-          <div class="ing-caption">Pilih satuan sesuai jenis bahan (berat/volume/pcs) — Isi Beli &amp; Dipakai otomatis dikonversi kalau satuannya beda tapi sejenis (mis. kg ↔ gram).</div>
-          <div id="ing-list"></div>
-          <button class="add-ing" onclick="addIngredient()">+ Tambah bahan</button>
-        </div>
-
-        <div class="card">
-          <h3><span class="dot" style="background:var(--mint)"></span>Tenaga Kerja &amp; Overhead</h3>
-          <div class="row">
-            <label>Tenaga kerja langsung (per batch/resep)</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="kl_tenaga" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Overhead — gas, listrik, air, kemasan</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="kl_overhead" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Jumlah porsi dihasilkan batch ini</label>
-            <div class="rp-wrap"><span class="prefix">#</span><input type="number" min="1" data-k="kl_porsi" value="1"></div>
-          </div>
-        </div>
-
-        <button class="calc-btn" onclick="hitungKuliner()">Hitung HPP →</button>
+    <a href="#" class="proj-card">
+      <div class="ic" style="background:var(--peach)">🧾</div>
+      <div class="info">
+        <h3>Invoice Generator</h3>
+        <p>Lagi disiapin — buat selebgram &amp; freelancer bikin invoice formal tapi tetap kasual.</p>
       </div>
+      <span class="arrow">→</span>
+    </a>
 
-      <div>
-        <div class="summary-card" id="kl-summary">
-          <div class="line"><span>Total biaya bahan baku</span><span id="kl-bahan">Rp 0</span></div>
-          <div class="line"><span>+ Tenaga kerja langsung</span><span id="kl-tenaga-o">Rp 0</span></div>
-          <div class="line"><span>+ Overhead</span><span id="kl-overhead-o">Rp 0</span></div>
-          <div class="line total"><span>Total biaya batch</span><span id="kl-total-o">Rp 0</span></div>
-        </div>
-
-        <div class="tag-area">
-          <div class="placeholder-note" id="kl-placeholder">Tambahkan bahan, isi tenaga kerja &amp; overhead, lalu hitung 👇</div>
-          <div class="tag" id="kl-stamp" style="background:var(--mint)">
-            <div class="label">HPP per Porsi</div>
-            <div class="value" id="kl-stamp-val">Rp 0</div>
-            <div class="sub" id="kl-stamp-sub">dari 1 porsi</div>
-          </div>
-        </div>
-
-        <div class="jual-card">
-          <h4>💡 Saran Harga Jual</h4>
-          <div class="row">
-            <label>Target food cost</label>
-            <div class="rp-wrap"><span class="prefix">%</span><input class="pct" type="number" min="1" max="90" data-k="kl_fc" value="35"></div>
-          </div>
-          <div class="jual-result" id="kl-jual">Rp 0 / porsi</div>
-          <div class="benchmark">Food cost aman: makanan 25–38%, minuman 15–25%, warung/UMKM rumahan 40–50%, katering 35–45%.</div>
-        </div>
-
-        <button class="save-btn" onclick="simpanKuliner()">💾 Simpan hasil ke Google Sheets</button>
-      </div>
-    </div>
+    <div class="proj-note">*Link masih placeholder — ganti dengan domain aslinya begitu tiap proyek sudah online.</div>
   </section>
 
-  <section class="page" id="page-manufaktur">
-    <div class="sector-intro">
-      <div class="big-icon" style="background:var(--sky)">🏭</div>
-      <div>
-        <h2>Industri Pengolahan (Manufaktur)</h2>
-        <div class="meta">Konveksi, produsen kemasan, kerajinan, furnitur · 4,17 juta unit usaha</div>
-        <div class="formula-chip">HPP = Harga Pokok Produksi + Barang Jadi Awal − Barang Jadi Akhir</div>
+  <section id="kontak">
+    <h2><span class="ic">💌</span>Kontak</h2>
+    <div class="contact-card">
+      <p>Mau ngobrol, kolaborasi, atau sekadar say hi — gas aja.</p>
+      <div class="contact-row">
+        <a href="mailto:hello@popfriends.id">📧 Email</a>
+        <a href="#">📸 Instagram</a>
+        <a href="#">💼 LinkedIn</a>
       </div>
-    </div>
-
-    <div class="grid">
-      <div>
-        <div class="card">
-          <h3><span class="dot" style="background:var(--sky)"></span>Bahan Baku Terpakai</h3>
-          <div class="row">
-            <label>Persediaan awal bahan baku</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bb_awal" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Pembelian bahan baku</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bb_beli" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Persediaan akhir bahan baku</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bb_akhir" type="text" value="0"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3><span class="dot" style="background:var(--sky)"></span>Biaya Produksi Lain</h3>
-          <div class="row">
-            <label>Biaya tenaga kerja langsung (BTKL)</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_btkl" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Biaya overhead pabrik (BOP)</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bop" type="text" value="0"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3><span class="dot" style="background:var(--sky)"></span>Barang Dalam Proses</h3>
-          <div class="row">
-            <label>Barang dalam proses — awal</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bdp_awal" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Barang dalam proses — akhir</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bdp_akhir" type="text" value="0"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3><span class="dot" style="background:var(--sky)"></span>Barang Jadi</h3>
-          <div class="row">
-            <label>Barang jadi — awal</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bj_awal" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Barang jadi — akhir</label>
-            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bj_akhir" type="text" value="0"></div>
-          </div>
-          <div class="row">
-            <label>Jumlah unit diproduksi</label>
-            <div class="rp-wrap"><span class="prefix">#</span><input type="number" min="0" data-k="mf_unit" value="0"></div>
-          </div>
-        </div>
-
-        <button class="calc-btn" onclick="hitungManufaktur()">Hitung HPP →</button>
-      </div>
-
-      <div>
-        <div class="summary-card" id="mf-summary">
-          <div class="line"><span>Bahan baku terpakai</span><span id="mf-bb-o">Rp 0</span></div>
-          <div class="line"><span>+ BTKL</span><span id="mf-btkl-o">Rp 0</span></div>
-          <div class="line"><span>+ BOP</span><span id="mf-bop-o">Rp 0</span></div>
-          <div class="line total"><span>Total biaya produksi</span><span id="mf-tbp-o">Rp 0</span></div>
-          <div class="line" style="border-top:2px solid var(--line); margin-top:6px; padding-top:8px;"><span>Harga pokok produksi</span><span id="mf-hpprod-o">Rp 0</span></div>
-        </div>
-
-        <div class="tag-area">
-          <div class="placeholder-note" id="mf-placeholder">Isi komponen produksi di sebelah kiri, lalu hitung 👇</div>
-          <div class="tag" id="mf-stamp" style="background:var(--sky)">
-            <div class="label">HPP Periode Ini</div>
-            <div class="value" id="mf-stamp-val">Rp 0</div>
-            <div class="sub" id="mf-stamp-sub">per unit: Rp 0</div>
-          </div>
-        </div>
-
-        <div class="jual-card">
-          <h4>💡 Saran Harga Jual</h4>
-          <div class="row">
-            <label>Markup dari HPP per unit</label>
-            <div class="rp-wrap"><span class="prefix">%</span><input class="pct" type="number" min="0" data-k="mf_markup" value="35"></div>
-          </div>
-          <div class="jual-result" id="mf-jual">Rp 0 / unit</div>
-          <div class="benchmark">Markup lazim manufaktur/konveksi skala UMKM: 30–60%, tergantung kompleksitas produk &amp; volume.</div>
-        </div>
-
-        <button class="save-btn" onclick="simpanManufaktur()">💾 Simpan hasil ke Google Sheets</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="page" id="page-riwayat">
-    <div class="sector-intro">
-      <div class="big-icon" style="background:var(--lilac)">📁</div>
-      <div>
-        <h2>Riwayat &amp; Backup Lokal</h2>
-        <div class="meta">Tersimpan di browser ini saja — tidak perlu Google Sheets untuk mulai memakainya.</div>
-        <div class="formula-chip">Setiap "💾 Simpan hasil" otomatis tercatat di sini juga</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="hist-actions">
-        <button class="file-btn" onclick="exportCSV()">⬇️ Unduh CSV</button>
-        <label class="file-btn">
-          ⬆️ Impor CSV
-          <input type="file" accept=".csv" style="display:none" onchange="importCSV(this.files[0]); this.value='';">
-        </label>
-        <button class="file-btn danger" onclick="clearHistory()">🗑️ Hapus Semua</button>
-      </div>
-      <div id="history-table"></div>
     </div>
   </section>
 
   <footer>
-    Rumus disusun dari praktik akuntansi umum di Indonesia (perusahaan dagang, food cost F&amp;B, manufaktur full-costing).<br>
-    Jumlah unit usaha per sektor mengacu pada klasifikasi KBLI, data UKMIndonesia.id / BPS 2025. Untuk kebutuhan pajak &amp; audit resmi, konsultasikan akuntan bersertifikat.<br>
-    Data yang disimpan lewat fitur Google Sheets tersimpan langsung ke akun Google milik masing-masing pengguna.
+    © 2026 Marvin Jovian — dibuat dengan rasa penasaran.
   </footer>
 </div>
 
-<div class="toast" id="toast"></div>
-
-<script>
-/* ---------- helpers ---------- */
-function toNumber(str){
-  if(typeof str !== 'string') return Number(str)||0;
-  const cleaned = str.replace(/[^0-9]/g,'');
-  return cleaned ? parseInt(cleaned,10) : 0;
-}
-function fmtRp(num){
-  num = Math.round(num||0);
-  return 'Rp ' + new Intl.NumberFormat('id-ID').format(num);
-}
-function getVal(key){
-  const el = document.querySelector('[data-k="'+key+'"]');
-  if(!el) return 0;
-  if(el.type === 'number') return Number(el.value)||0;
-  return toNumber(el.value);
-}
-
-document.addEventListener('input', function(e){
-  if(e.target.classList && e.target.classList.contains('rp-input')){
-    const n = toNumber(e.target.value);
-    e.target.value = n === 0 ? '0' : new Intl.NumberFormat('id-ID').format(n);
-  }
-});
-
-/* ---------- toast ---------- */
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.remove('show');
-  void t.offsetWidth;
-  t.classList.add('show');
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2800);
-}
-
-/* ---------- google sheets connection ---------- */
-const SHEET_KEY = 'hpp_sheet_webhook_url';
-function updateSheetStatus(v){
-  const el = document.getElementById('sheet-status');
-  if(v){ el.textContent='Tersambung ✅'; el.style.color='#1E7A57'; }
-  else{ el.textContent='Belum tersambung'; el.style.color='#E8654F'; }
-}
-function loadSheetUrl(){
-  const v = localStorage.getItem(SHEET_KEY) || '';
-  document.getElementById('sheet-url').value = v;
-  updateSheetStatus(v);
-  const nama = localStorage.getItem('hpp_nama_usaha') || '';
-  document.getElementById('nama-usaha').value = nama;
-}
-function saveSheetUrl(){
-  const v = document.getElementById('sheet-url').value.trim();
-  localStorage.setItem(SHEET_KEY, v);
-  updateSheetStatus(v);
-  showToast(v ? 'URL Sheets tersimpan ✅' : 'URL dikosongkan');
-}
-document.getElementById('nama-usaha').addEventListener('input', function(e){
-  localStorage.setItem('hpp_nama_usaha', e.target.value);
-});
-function toggleGuide(){
-  const g = document.getElementById('guide');
-  const btn = document.getElementById('guide-toggle');
-  const open = g.style.display !== 'none';
-  g.style.display = open ? 'none' : 'block';
-  btn.textContent = open
-    ? 'Belum punya Sheets-nya? Lihat cara sambungkan (5 menit) ⌄'
-    : 'Sembunyikan panduan ⌃';
-}
-function copyCode(){
-  const code = document.getElementById('gs-code').textContent;
-  navigator.clipboard.writeText(code).then(()=> showToast('Kode Apps Script disalin 📋'))
-    .catch(()=> showToast('Gagal menyalin — salin manual ya'));
-}
-function sendToSheets(sektor, payload, onDone){
-  const url = localStorage.getItem(SHEET_KEY);
-  if(!url){ if(onDone) onDone(false); return; }
-  const namaUsaha = document.getElementById('nama-usaha').value || '-';
-  const full = Object.assign({
-    waktu: new Date().toLocaleString('id-ID'),
-    sektor: sektor,
-    nama_usaha: namaUsaha
-  }, payload);
-  fetch(url, {
-    method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify(full)
-  }).then(()=>{
-    if(onDone) onDone(true);
-  }).catch(()=>{
-    if(onDone) onDone(false, true);
-  });
-}
-
-/* ---------- riwayat lokal (backup tanpa perlu Sheets) ---------- */
-const HIST_KEY = 'hpp_riwayat_lokal';
-function getLocalHistory(){
-  try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(_){ return []; }
-}
-function saveLocalHistory(arr){ localStorage.setItem(HIST_KEY, JSON.stringify(arr)); }
-
-function recordLocal(sektor, payload){
-  const hist = getLocalHistory();
-  const hppUtama = payload.hpp !== undefined ? payload.hpp
-    : (payload.hpp_per_porsi !== undefined ? payload.hpp_per_porsi : 0);
-  hist.unshift({
-    waktu: new Date().toLocaleString('id-ID'),
-    sektor: sektor,
-    nama_usaha: document.getElementById('nama-usaha').value || '-',
-    hpp_utama: hppUtama,
-    detail: payload
-  });
-  saveLocalHistory(hist);
-  renderHistory();
-}
-
-function simpanHasil(sektor, payload){
-  recordLocal(sektor, payload);
-  const url = localStorage.getItem(SHEET_KEY);
-  if(!url){
-    showToast('📥 Tersimpan ke riwayat lokal. Sambungkan Sheets untuk backup ke cloud.');
-    return;
-  }
-  sendToSheets(sektor, payload, (ok, failed)=>{
-    if(ok) showToast('Tersimpan ke riwayat lokal 📥 + Google Sheets ✅');
-    else if(failed) showToast('Tersimpan lokal 📥, tapi gagal kirim ke Sheets — cek URL Web App');
-  });
-}
-
-function renderHistory(){
-  const hist = getLocalHistory();
-  const container = document.getElementById('history-table');
-  if(!container) return;
-  if(hist.length === 0){
-    container.innerHTML = '<div class="hist-empty">Belum ada riwayat. Klik "💾 Simpan hasil ke Google Sheets" di salah satu kalkulator — otomatis tercatat di sini juga.</div>';
-    return;
-  }
-  let html = '<div style="overflow-x:auto;"><table class="hist-table"><tr>' +
-    '<th>Waktu</th><th>Sektor</th><th>Usaha</th><th style="text-align:right;">HPP</th><th></th></tr>';
-  hist.forEach((e, i)=>{
-    html += '<tr>' +
-      '<td>' + (e.waktu||'-') + '</td>' +
-      '<td>' + (e.sektor||'-') + '</td>' +
-      '<td>' + (e.nama_usaha||'-') + '</td>' +
-      '<td style="text-align:right; font-weight:800;">' + fmtRp(e.hpp_utama) + '</td>' +
-      '<td style="text-align:center;"><span class="rm" onclick="deleteHistoryRow(' + i + ')">✕</span></td>' +
-      '</tr>';
-  });
-  html += '</table></div>';
-  container.innerHTML = html;
-}
-
-function deleteHistoryRow(i){
-  const hist = getLocalHistory();
-  hist.splice(i,1);
-  saveLocalHistory(hist);
-  renderHistory();
-}
-function clearHistory(){
-  if(confirm('Hapus semua riwayat lokal? Tindakan ini tidak bisa dibatalkan.')){
-    saveLocalHistory([]);
-    renderHistory();
-    showToast('Riwayat dihapus 🗑️');
-  }
-}
-
-function csvEscape(val){
-  val = String(val === undefined || val === null ? '' : val);
-  if(/[",\n]/.test(val)){ val = '"' + val.replace(/"/g,'""') + '"'; }
-  return val;
-}
-function exportCSV(){
-  const data = getLocalHistory();
-  const header = ['waktu','sektor','nama_usaha','hpp_utama','detail_json'];
-  const rows = [header.join(',')];
-  data.forEach(e=>{
-    rows.push([e.waktu, e.sektor, e.nama_usaha, e.hpp_utama, JSON.stringify(e.detail||{})].map(csvEscape).join(','));
-  });
-  const csv = rows.join('\n');
-  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'riwayat-hpp-' + new Date().toISOString().slice(0,10) + '.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('CSV terunduh ⬇️');
-}
-function parseCSV(text){
-  const rows = [];
-  let row = [], field = '', inQuotes = false;
-  for(let i=0;i<text.length;i++){
-    const c = text[i];
-    if(inQuotes){
-      if(c === '"'){
-        if(text[i+1] === '"'){ field += '"'; i++; }
-        else{ inQuotes = false; }
-      } else field += c;
-    } else {
-      if(c === '"') inQuotes = true;
-      else if(c === ','){ row.push(field); field=''; }
-      else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
-      else if(c === '\r'){ /* skip */ }
-      else field += c;
-    }
-  }
-  if(field.length || row.length){ row.push(field); rows.push(row); }
-  return rows;
-}
-function importCSV(file){
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e){
-    try{
-      const rows = parseCSV(e.target.result);
-      const header = rows[0];
-      const idx = {
-        waktu: header.indexOf('waktu'),
-        sektor: header.indexOf('sektor'),
-        nama_usaha: header.indexOf('nama_usaha'),
-        hpp_utama: header.indexOf('hpp_utama'),
-        detail_json: header.indexOf('detail_json')
-      };
-      const existing = getLocalHistory();
-      let added = 0;
-      for(let i=1;i<rows.length;i++){
-        const r = rows[i];
-        if(!r || r.length < 2) continue;
-        let detail = {};
-        try{ detail = JSON.parse(r[idx.detail_json] || '{}'); }catch(_){}
-        existing.push({
-          waktu: r[idx.waktu], sektor: r[idx.sektor], nama_usaha: r[idx.nama_usaha],
-          hpp_utama: Number(r[idx.hpp_utama]) || 0, detail: detail
-        });
-        added++;
-      }
-      saveLocalHistory(existing);
-      renderHistory();
-      showToast('Impor berhasil: ' + added + ' baris ditambahkan ✅');
-    }catch(err){
-      showToast('Gagal membaca CSV — pastikan formatnya sesuai');
-    }
-  };
-  reader.readAsText(file);
-}
-
-/* ---------- nav ---------- */
-function showPage(id, btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(t=>t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-}
-
-/* ---------- SEKTOR 1: DAGANG ---------- */
-let lastDagang = null;
-function hitungDagang(){
-  const awal = getVal('dg_awal');
-  const akhir = getVal('dg_akhir');
-  const pembelian = getVal('dg_pembelian');
-  const ongkos = getVal('dg_ongkos');
-  const retur = getVal('dg_retur');
-  const potongan = getVal('dg_potongan');
-  const unit = getVal('dg_unit');
-  const markup = getVal('dg_markup');
-
-  const pembelianBersih = pembelian + ongkos - retur - potongan;
-  const hpp = awal + pembelianBersih - akhir;
-  const hppPerUnit = unit > 0 ? hpp / unit : null;
-  const hargaJual = hppPerUnit !== null ? hppPerUnit * (1 + markup/100) : null;
-
-  document.getElementById('dg-pb').textContent = fmtRp(pembelianBersih);
-  document.getElementById('dg-awal-o').textContent = fmtRp(awal);
-  document.getElementById('dg-akhir-o').textContent = fmtRp(akhir);
-  document.getElementById('dg-hpp-o').textContent = fmtRp(hpp);
-
-  document.getElementById('dg-stamp-val').textContent = fmtRp(hpp);
-  document.getElementById('dg-stamp-sub').textContent = hppPerUnit !== null
-    ? 'per unit: ' + fmtRp(hppPerUnit)
-    : 'isi jumlah unit untuk HPP per unit';
-  document.getElementById('dg-jual').textContent = hargaJual !== null
-    ? fmtRp(hargaJual) + ' / unit'
-    : 'isi jumlah unit dulu';
-
-  popTag('dg-stamp','dg-placeholder');
-
-  lastDagang = {
-    persediaan_awal: awal, persediaan_akhir: akhir, pembelian: pembelian,
-    ongkos_angkut: ongkos, retur_pembelian: retur, potongan_pembelian: potongan,
-    pembelian_bersih: pembelianBersih, hpp: hpp, unit_terjual: unit,
-    hpp_per_unit: hppPerUnit || 0, markup_persen: markup, harga_jual_per_unit: hargaJual || 0
-  };
-}
-function simpanDagang(){
-  hitungDagang();
-  simpanHasil('Dagang', lastDagang);
-}
-
-/* ---------- SEKTOR 2: KULINER ---------- */
-const UNITS = {
-  gram:{cat:'Berat', label:'gram', factor:1},
-  kg:{cat:'Berat', label:'kg', factor:1000},
-  ml:{cat:'Volume', label:'ml', factor:1},
-  liter:{cat:'Volume', label:'liter', factor:1000},
-  sdm:{cat:'Volume', label:'sdm', factor:15},
-  sdt:{cat:'Volume', label:'sdt', factor:5},
-  pcs:{cat:'Satuan', label:'pcs', factor:1},
-  butir:{cat:'Satuan', label:'butir', factor:1},
-  lembar:{cat:'Satuan', label:'lembar', factor:1},
-  ikat:{cat:'Satuan', label:'ikat', factor:1}
-};
-function unitOptions(selected){
-  const groups = {};
-  Object.keys(UNITS).forEach(k=>{
-    const u = UNITS[k];
-    (groups[u.cat] = groups[u.cat] || []).push(k);
-  });
-  let html = '';
-  Object.keys(groups).forEach(cat=>{
-    html += `<optgroup label="${cat}">`;
-    groups[cat].forEach(k=>{
-      html += `<option value="${k}" ${k===selected?'selected':''}>${UNITS[k].label}</option>`;
-    });
-    html += `</optgroup>`;
-  });
-  return html;
-}
-
-let ingCount = 0;
-let lastKuliner = null;
-function addIngredient(name, harga, isi, isiUnit, pakai, pakaiUnit, yieldp){
-  ingCount++;
-  const id = 'ing'+ingCount;
-  const row = document.createElement('div');
-  row.className = 'ing-row';
-  row.id = id;
-  row.innerHTML = `
-    <div class="ing-field full"><span class="ing-mlabel">Bahan</span><input type="text" class="name-input" placeholder="mis. Tepung terigu" value="${name||''}"></div>
-    <div class="ing-field"><span class="ing-mlabel">Harga Beli (Rp)</span><input type="text" class="rp-ing" placeholder="10000" value="${harga||''}"></div>
-    <div class="ing-field">
-      <span class="ing-mlabel">Isi Beli</span>
-      <div class="qty-unit">
-        <input type="number" class="qty-isi" placeholder="1000" value="${isi||''}">
-        <select class="unit-isi">${unitOptions(isiUnit||'gram')}</select>
-      </div>
-    </div>
-    <div class="ing-field">
-      <span class="ing-mlabel">Dipakai</span>
-      <div class="qty-unit">
-        <input type="number" class="qty-pakai" placeholder="200" value="${pakai||''}">
-        <select class="unit-pakai">${unitOptions(pakaiUnit||'gram')}</select>
-      </div>
-    </div>
-    <div class="ing-field"><span class="ing-mlabel">Yield %</span><input type="number" class="yield-input" placeholder="100" value="${yieldp||100}"></div>
-    <div class="unit-warning">⚠️ Satuan Isi Beli &amp; Dipakai tidak sejenis — bahan ini tidak ikut dihitung.</div>
-    <span class="rm" onclick="document.getElementById('${id}').remove()">✕ Hapus bahan</span>
-  `;
-  document.getElementById('ing-list').appendChild(row);
-  row.querySelector('.rp-ing').addEventListener('input', function(e){
-    const n = toNumber(e.target.value);
-    e.target.value = n===0 ? '' : new Intl.NumberFormat('id-ID').format(n);
-  });
-}
-addIngredient('Beras', '10000', 1, 'kg', 200, 'gram', 100);
-addIngredient('Ayam', '40000', 1, 'kg', 100, 'gram', 90);
-addIngredient('Bumbu & minyak', '2000', 1, 'pcs', 1, 'pcs', 100);
-
-function hitungKuliner(){
-  let totalBahan = 0;
-  const bahanSummary = [];
-  document.querySelectorAll('#ing-list .ing-row').forEach(row=>{
-    const nama = row.querySelector('.name-input').value || 'Bahan';
-    const harga = toNumber(row.querySelector('.rp-ing').value);
-    const isi = Number(row.querySelector('.qty-isi').value)||0;
-    const isiUnit = row.querySelector('.unit-isi').value;
-    const pakai = Number(row.querySelector('.qty-pakai').value)||0;
-    const pakaiUnit = row.querySelector('.unit-pakai').value;
-    const yieldp = Number(row.querySelector('.yield-input').value)||100;
-    const warnEl = row.querySelector('.unit-warning');
-
-    const sameCategory = UNITS[isiUnit].cat === UNITS[pakaiUnit].cat;
-    if(!sameCategory){
-      row.classList.add('mismatch');
-      warnEl.style.display = 'block';
-      return;
-    }
-    row.classList.remove('mismatch');
-    warnEl.style.display = 'none';
-
-    const isiBase = isi * UNITS[isiUnit].factor;
-    const pakaiBase = pakai * UNITS[pakaiUnit].factor;
-    if(isiBase > 0){
-      const hargaSatuan = harga / isiBase;
-      const biaya = (hargaSatuan * pakaiBase) / (yieldp/100);
-      totalBahan += biaya;
-      bahanSummary.push(nama + ' (' + pakai + ' ' + UNITS[pakaiUnit].label + ' dari ' + isi + ' ' + UNITS[isiUnit].label + '): ' + fmtRp(biaya));
-    }
-  });
-
-  const tenaga = getVal('kl_tenaga');
-  const overhead = getVal('kl_overhead');
-  const porsi = Math.max(1, getVal('kl_porsi'));
-  const fc = getVal('kl_fc');
-
-  const totalBatch = totalBahan + tenaga + overhead;
-  const hppPorsi = totalBatch / porsi;
-  const hargaJual = fc > 0 ? hppPorsi / (fc/100) : null;
-
-  document.getElementById('kl-bahan').textContent = fmtRp(totalBahan);
-  document.getElementById('kl-tenaga-o').textContent = fmtRp(tenaga);
-  document.getElementById('kl-overhead-o').textContent = fmtRp(overhead);
-  document.getElementById('kl-total-o').textContent = fmtRp(totalBatch);
-
-  document.getElementById('kl-stamp-val').textContent = fmtRp(hppPorsi);
-  document.getElementById('kl-stamp-sub').textContent = 'dari ' + porsi + ' porsi';
-  document.getElementById('kl-jual').textContent = hargaJual !== null
-    ? fmtRp(hargaJual) + ' / porsi' : '—';
-
-  popTag('kl-stamp','kl-placeholder');
-
-  lastKuliner = {
-    daftar_bahan: bahanSummary.join(' | '),
-    total_biaya_bahan: totalBahan, tenaga_kerja: tenaga, overhead: overhead,
-    jumlah_porsi: porsi, total_biaya_batch: totalBatch, hpp_per_porsi: hppPorsi,
-    target_food_cost_persen: fc, harga_jual_per_porsi: hargaJual || 0
-  };
-}
-function simpanKuliner(){
-  hitungKuliner();
-  simpanHasil('Kuliner', lastKuliner);
-}
-
-/* ---------- SEKTOR 3: MANUFAKTUR ---------- */
-let lastManufaktur = null;
-function hitungManufaktur(){
-  const bbAwal = getVal('mf_bb_awal');
-  const bbBeli = getVal('mf_bb_beli');
-  const bbAkhir = getVal('mf_bb_akhir');
-  const btkl = getVal('mf_btkl');
-  const bop = getVal('mf_bop');
-  const bdpAwal = getVal('mf_bdp_awal');
-  const bdpAkhir = getVal('mf_bdp_akhir');
-  const bjAwal = getVal('mf_bj_awal');
-  const bjAkhir = getVal('mf_bj_akhir');
-  const unit = getVal('mf_unit');
-  const markup = getVal('mf_markup');
-
-  const bahanTerpakai = bbAwal + bbBeli - bbAkhir;
-  const totalBiayaProduksi = bahanTerpakai + btkl + bop;
-  const hpProduksi = totalBiayaProduksi + bdpAwal - bdpAkhir;
-  const hpp = hpProduksi + bjAwal - bjAkhir;
-  const hppPerUnit = unit > 0 ? hpp / unit : null;
-  const hargaJual = hppPerUnit !== null ? hppPerUnit * (1 + markup/100) : null;
-
-  document.getElementById('mf-bb-o').textContent = fmtRp(bahanTerpakai);
-  document.getElementById('mf-btkl-o').textContent = fmtRp(btkl);
-  document.getElementById('mf-bop-o').textContent = fmtRp(bop);
-  document.getElementById('mf-tbp-o').textContent = fmtRp(totalBiayaProduksi);
-  document.getElementById('mf-hpprod-o').textContent = fmtRp(hpProduksi);
-
-  document.getElementById('mf-stamp-val').textContent = fmtRp(hpp);
-  document.getElementById('mf-stamp-sub').textContent = hppPerUnit !== null
-    ? 'per unit: ' + fmtRp(hppPerUnit)
-    : 'isi jumlah unit untuk HPP per unit';
-  document.getElementById('mf-jual').textContent = hargaJual !== null
-    ? fmtRp(hargaJual) + ' / unit' : 'isi jumlah unit dulu';
-
-  popTag('mf-stamp','mf-placeholder');
-
-  lastManufaktur = {
-    bb_awal: bbAwal, bb_beli: bbBeli, bb_akhir: bbAkhir, bahan_terpakai: bahanTerpakai,
-    btkl: btkl, bop: bop, total_biaya_produksi: totalBiayaProduksi,
-    bdp_awal: bdpAwal, bdp_akhir: bdpAkhir, harga_pokok_produksi: hpProduksi,
-    bj_awal: bjAwal, bj_akhir: bjAkhir, hpp: hpp, unit_produksi: unit,
-    hpp_per_unit: hppPerUnit || 0, markup_persen: markup, harga_jual_per_unit: hargaJual || 0
-  };
-}
-function simpanManufaktur(){
-  hitungManufaktur();
-  simpanHasil('Manufaktur', lastManufaktur);
-}
-
-/* ---------- tag pop animation ---------- */
-function popTag(stampId, placeholderId){
-  const tag = document.getElementById(stampId);
-  const ph = document.getElementById(placeholderId);
-  ph.style.display = 'none';
-  tag.classList.remove('show');
-  void tag.offsetWidth;
-  tag.classList.add('show');
-}
-
-/* ---------- init ---------- */
-loadSheetUrl();
-renderHistory();
-</script>
 </body>
 </html>
