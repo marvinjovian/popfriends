@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator HPP — 3 Sektor Usaha Terbesar Indonesia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="hpp.css">
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="pf-nav">
+    <a href="../" class="brand">🌱 popfriends</a>
+    <div class="links">
+      <a href="../hpp/" class="active">🧮 Buku HPP</a>
+      <a href="../resi/">📦 Resi</a>
+      <a href="../invoice/">🧾 Invoice</a>
+    </div>
+  </nav>
+
+  <header class="top">
+    <div class="badge">🧮 &nbsp;Kalkulator HPP untuk UMKM</div>
+    <h1>Hitung HPP-mu <span class="pop">tanpa pusing</span></h1>
+    <p>Tiga kalkulator terpisah untuk tiga sektor usaha terbesar di Indonesia — masing-masing pakai cara hitung yang memang berbeda. Isi angkanya, langsung dapat HPP dan saran harga jual — lalu simpan ke Google Sheets-mu sendiri.</p>
+  </header>
+
+  <div class="sheets-panel">
+    <div class="sheets-head">
+      <div class="ic">📊</div>
+      <h3>Sambungkan ke Google Sheets-mu</h3>
+    </div>
+    <div class="sheets-row">
+      <input type="text" id="sheet-url" placeholder="Tempel URL Web App Google Sheets di sini (lihat cara di bawah)…">
+      <button class="mini-btn" onclick="app.saveSheetUrl()">Simpan</button>
+      <span class="sheet-status" id="sheet-status">Belum tersambung</span>
+    </div>
+    <div class="nama-row">
+      <label>Nama usaha / klien (ikut tersimpan di tiap baris):</label>
+      <input type="text" id="nama-usaha" placeholder="mis. Toko Barokah">
+    </div>
+    <button class="link-toggle" onclick="app.toggleGuide()" id="guide-toggle">Belum punya Sheets-nya? Lihat cara sambungkan (5 menit) ⌄</button>
+    <div class="guide" id="guide" style="display:none">
+      <ol>
+        <li>Buat <strong>Google Sheet baru</strong> di Google Drive-mu.</li>
+        <li>Buka menu <code>Extensions</code> → <code>Apps Script</code>.</li>
+        <li>Hapus semua kode yang ada, lalu tempel kode di bawah ini (tombol salin di kanan atas).</li>
+        <li>Klik <code>Deploy</code> → <code>New deployment</code> → pilih tipe <code>Web app</code>. Isi <em>Execute as</em>: <strong>Me</strong>, dan <em>Who has access</em>: <strong>Anyone</strong>. Klik <code>Deploy</code>.</li>
+        <li>Salin <strong>Web app URL</strong> yang muncul, tempel di kotak di atas, lalu klik <em>Simpan</em>.</li>
+        <li>Kembali ke Sheets-nya, refresh halaman — akan muncul menu baru <strong>📊 Buku HPP</strong>. Klik <strong>🎨 Setup Template Otomatis</strong> untuk memberi warna header otomatis.</li>
+        <li>Untuk grafik tren HPP: blok kolom <code>waktu</code> dan kolom HPP → <code>Insert</code> → <code>Chart</code>.</li>
+      </ol>
+      <div class="code-box">
+        <button class="copy-btn" onclick="app.copyCode()">📋 Salin kode</button>
+        <pre id="gs-code">function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('📊 Buku HPP')
+    .addItem('🎨 Setup Template Otomatis', 'setupTemplate')
+    .addToUi();
+}
+
+function setupTemplate() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sektor = {
+    'Dagang': '#FFD9B8',
+    'Kuliner': '#BFEFDA',
+    'Manufaktur': '#C9DFFC'
+  };
+  Object.keys(sektor).forEach(function (nama) {
+    var sheet = ss.getSheetByName(nama);
+    if (!sheet) sheet = ss.insertSheet(nama);
+    formatSheet(sheet, sektor[nama]);
+  });
+  SpreadsheetApp.getUi().alert(
+    'Template siap! 3 tab (Dagang, Kuliner, Manufaktur) sudah diformat.\\n\\n' +
+    'Untuk grafik tren HPP: blok kolom waktu + kolom HPP, lalu Insert > Chart.'
+  );
+}
+
+function formatSheet(sheet, warna) {
+  var lastCol = Math.max(sheet.getLastColumn(), 1);
+  if (sheet.getLastRow() > 0) {
+    var header = sheet.getRange(1, 1, 1, lastCol);
+    header.setBackground(warna).setFontWeight('bold').setHorizontalAlignment('center');
+  }
+  sheet.setFrozenRows(1);
+  sheet.autoResizeColumns(1, Math.max(lastCol, 10));
+}
+
+function doPost(e) {
+  try {
+    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheetName = data.sektor || 'Riwayat';
+    var sheet = ss.getSheetByName(sheetName);
+    if (!sheet) sheet = ss.insertSheet(sheetName);
+    if (sheet.getLastRow() === 0) sheet.appendRow(Object.keys(data));
+    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+    var row = headers.map(function(h) { return data[h] !== undefined ? data[h] : ''; });
+    sheet.appendRow(row);
+    return ContentService.createTextOutput(JSON.stringify({status: 'ok'}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({status: 'error', message: String(err)}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput('Buku HPP Sheets Endpoint aktif ✅');
+}</pre>
+      </div>
+      <p style="margin-top:10px; font-size:12.5px;">Data tersimpan langsung ke akun Google-mu sendiri — tidak lewat server pihak ketiga mana pun.</p>
+    </div>
+  </div>
+
+  <nav class="pill-nav">
+    <button class="pill-btn active" data-c="peach" onclick="app.showPage('page-dagang', this)">
+      <span class="icon">🛍️</span> Dagang &amp; Eceran
+    </button>
+    <button class="pill-btn" data-c="mint" onclick="app.showPage('page-kuliner', this)">
+      <span class="icon">🍲</span> Kuliner &amp; F&amp;B
+    </button>
+    <button class="pill-btn" data-c="sky" onclick="app.showPage('page-manufaktur', this)">
+      <span class="icon">🏭</span> Manufaktur
+    </button>
+    <button class="pill-btn" data-c="lilac" onclick="app.showPage('page-riwayat', this)">
+      <span class="icon">📁</span> Riwayat Lokal
+    </button>
+  </nav>
+
+  <!-- ============ SEKTOR 1: DAGANG ============ -->
+  <section class="tab-page active" id="page-dagang">
+    <div class="sector-intro">
+      <div class="big-icon" style="background:var(--peach)">🛍️</div>
+      <div>
+        <h2>Perdagangan &amp; Eceran</h2>
+        <div class="meta">Toko, warung, reseller, distributor · sektor terbesar, 14,44 juta unit usaha</div>
+        <div class="formula-chip">HPP = Persediaan Awal + Pembelian Bersih − Persediaan Akhir</div>
+      </div>
+    </div>
+
+    <div class="grid-2col">
+      <div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--peach)"></span>Persediaan Barang</h3>
+          <div class="row-inline">
+            <label>Persediaan awal<span class="hint">nilai stok di awal periode</span></label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_awal" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Persediaan akhir<span class="hint">nilai stok tersisa di akhir periode</span></label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_akhir" type="text" value="0"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--peach)"></span>Pembelian Bersih</h3>
+          <div class="row-inline">
+            <label>Total pembelian barang</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_pembelian" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Ongkos angkut pembelian</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_ongkos" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Retur pembelian</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_retur" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Potongan / diskon pembelian</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="dg_potongan" type="text" value="0"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--peach)"></span>Opsional: HPP per Unit</h3>
+          <div class="row-inline">
+            <label>Jumlah unit terjual periode ini</label>
+            <div class="rp-wrap"><span class="prefix">#</span><input type="number" min="0" data-k="dg_unit" value="0"></div>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="app.hitungDagang()">Hitung HPP →</button>
+      </div>
+
+      <div>
+        <div class="summary-card">
+          <div class="row"><span>Pembelian bersih</span><span id="dg-pb">Rp 0</span></div>
+          <div class="row"><span>+ Persediaan awal</span><span id="dg-awal-o">Rp 0</span></div>
+          <div class="row"><span>− Persediaan akhir</span><span class="neg" id="dg-akhir-o">Rp 0</span></div>
+          <div class="row total"><span>HPP</span><span id="dg-hpp-o">Rp 0</span></div>
+        </div>
+
+        <div class="tag-area">
+          <div class="preview-placeholder" id="dg-placeholder">Isi angka di sebelah kiri lalu tekan "Hitung HPP" — hasilnya muncul di sini 👇</div>
+          <div class="result-tag" id="dg-stamp">
+            <div class="label">HPP Periode Ini</div>
+            <div class="value" id="dg-stamp-val">Rp 0</div>
+            <div class="sub" id="dg-stamp-sub">per unit: Rp 0</div>
+          </div>
+        </div>
+
+        <div class="suggest-card">
+          <h4>💡 Saran Harga Jual</h4>
+          <div class="row-inline">
+            <label>Markup dari HPP per unit</label>
+            <div class="rp-wrap"><span class="prefix">%</span><input class="pct" type="number" min="0" data-k="dg_markup" value="30"></div>
+          </div>
+          <div class="suggest-result" id="dg-jual">Rp 0 / unit</div>
+          <div class="suggest-benchmark">Markup lazim ritel/reseller: 20–50% dari HPP, tergantung kategori barang &amp; perputaran stok.</div>
+        </div>
+
+        <button class="save-btn" onclick="app.simpanDagang()">💾 Simpan hasil ke Google Sheets</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEKTOR 2: KULINER ============ -->
+  <section class="tab-page" id="page-kuliner">
+    <div class="sector-intro">
+      <div class="big-icon" style="background:var(--mint)">🍲</div>
+      <div>
+        <h2>Kuliner &amp; Akomodasi (F&amp;B)</h2>
+        <div class="meta">Warung makan, kafe, katering, minuman kekinian · 6,41 juta unit usaha</div>
+        <div class="formula-chip">HPP per Porsi = (Bahan Baku + Tenaga Kerja + Overhead) ÷ Jumlah Porsi</div>
+      </div>
+    </div>
+
+    <div class="grid-2col">
+      <div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--mint)"></span>Bahan Baku per Resep / Batch</h3>
+          <div class="ing-caption">Pilih satuan sesuai jenis bahan (berat/volume/pcs) — Isi Beli &amp; Dipakai otomatis dikonversi kalau satuannya beda tapi sejenis (mis. kg ↔ gram).</div>
+          <div id="ing-list"></div>
+          <button class="btn-dashed" onclick="app.addIngredientRow()">+ Tambah bahan</button>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--mint)"></span>Tenaga Kerja &amp; Overhead</h3>
+          <div class="row-inline">
+            <label>Tenaga kerja langsung (per batch/resep)</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="kl_tenaga" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Overhead — gas, listrik, air, kemasan</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="kl_overhead" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Jumlah porsi dihasilkan batch ini</label>
+            <div class="rp-wrap"><span class="prefix">#</span><input type="number" min="1" data-k="kl_porsi" value="1"></div>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="app.hitungKuliner()">Hitung HPP →</button>
+      </div>
+
+      <div>
+        <div class="summary-card">
+          <div class="row"><span>Total biaya bahan baku</span><span id="kl-bahan">Rp 0</span></div>
+          <div class="row"><span>+ Tenaga kerja langsung</span><span id="kl-tenaga-o">Rp 0</span></div>
+          <div class="row"><span>+ Overhead</span><span id="kl-overhead-o">Rp 0</span></div>
+          <div class="row total"><span>Total biaya batch</span><span id="kl-total-o">Rp 0</span></div>
+        </div>
+
+        <div class="tag-area">
+          <div class="preview-placeholder" id="kl-placeholder">Tambahkan bahan, isi tenaga kerja &amp; overhead, lalu hitung 👇</div>
+          <div class="result-tag" id="kl-stamp" style="background:var(--mint)">
+            <div class="label">HPP per Porsi</div>
+            <div class="value" id="kl-stamp-val">Rp 0</div>
+            <div class="sub" id="kl-stamp-sub">dari 1 porsi</div>
+          </div>
+        </div>
+
+        <div class="suggest-card">
+          <h4>💡 Saran Harga Jual</h4>
+          <div class="row-inline">
+            <label>Target food cost</label>
+            <div class="rp-wrap"><span class="prefix">%</span><input class="pct" type="number" min="1" max="90" data-k="kl_fc" value="35"></div>
+          </div>
+          <div class="suggest-result" id="kl-jual">Rp 0 / porsi</div>
+          <div class="suggest-benchmark">Food cost aman: makanan 25–38%, minuman 15–25%, warung/UMKM rumahan 40–50%, katering 35–45%.</div>
+        </div>
+
+        <button class="save-btn" onclick="app.simpanKuliner()">💾 Simpan hasil ke Google Sheets</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEKTOR 3: MANUFAKTUR ============ -->
+  <section class="tab-page" id="page-manufaktur">
+    <div class="sector-intro">
+      <div class="big-icon" style="background:var(--sky)">🏭</div>
+      <div>
+        <h2>Industri Pengolahan (Manufaktur)</h2>
+        <div class="meta">Konveksi, produsen kemasan, kerajinan, furnitur · 4,17 juta unit usaha</div>
+        <div class="formula-chip">HPP = Harga Pokok Produksi + Barang Jadi Awal − Barang Jadi Akhir</div>
+      </div>
+    </div>
+
+    <div class="grid-2col">
+      <div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--sky)"></span>Bahan Baku Terpakai</h3>
+          <div class="row-inline">
+            <label>Persediaan awal bahan baku</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bb_awal" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Pembelian bahan baku</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bb_beli" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Persediaan akhir bahan baku</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bb_akhir" type="text" value="0"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--sky)"></span>Biaya Produksi Lain</h3>
+          <div class="row-inline">
+            <label>Biaya tenaga kerja langsung (BTKL)</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_btkl" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Biaya overhead pabrik (BOP)</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bop" type="text" value="0"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--sky)"></span>Barang Dalam Proses</h3>
+          <div class="row-inline">
+            <label>Barang dalam proses — awal</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bdp_awal" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Barang dalam proses — akhir</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bdp_akhir" type="text" value="0"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--sky)"></span>Barang Jadi</h3>
+          <div class="row-inline">
+            <label>Barang jadi — awal</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bj_awal" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Barang jadi — akhir</label>
+            <div class="rp-wrap"><span class="prefix">Rp</span><input class="rp-input" data-k="mf_bj_akhir" type="text" value="0"></div>
+          </div>
+          <div class="row-inline">
+            <label>Jumlah unit diproduksi</label>
+            <div class="rp-wrap"><span class="prefix">#</span><input type="number" min="0" data-k="mf_unit" value="0"></div>
+          </div>
+        </div>
+
+        <button class="btn-primary" onclick="app.hitungManufaktur()">Hitung HPP →</button>
+      </div>
+
+      <div>
+        <div class="summary-card">
+          <div class="row"><span>Bahan baku terpakai</span><span id="mf-bb-o">Rp 0</span></div>
+          <div class="row"><span>+ BTKL</span><span id="mf-btkl-o">Rp 0</span></div>
+          <div class="row"><span>+ BOP</span><span id="mf-bop-o">Rp 0</span></div>
+          <div class="row total"><span>Total biaya produksi</span><span id="mf-tbp-o">Rp 0</span></div>
+          <div class="row" style="border-top:2px solid var(--line); margin-top:6px; padding-top:8px;"><span>Harga pokok produksi</span><span id="mf-hpprod-o">Rp 0</span></div>
+        </div>
+
+        <div class="tag-area">
+          <div class="preview-placeholder" id="mf-placeholder">Isi komponen produksi di sebelah kiri, lalu hitung 👇</div>
+          <div class="result-tag" id="mf-stamp" style="background:var(--sky)">
+            <div class="label">HPP Periode Ini</div>
+            <div class="value" id="mf-stamp-val">Rp 0</div>
+            <div class="sub" id="mf-stamp-sub">per unit: Rp 0</div>
+          </div>
+        </div>
+
+        <div class="suggest-card">
+          <h4>💡 Saran Harga Jual</h4>
+          <div class="row-inline">
+            <label>Markup dari HPP per unit</label>
+            <div class="rp-wrap"><span class="prefix">%</span><input class="pct" type="number" min="0" data-k="mf_markup" value="35"></div>
+          </div>
+          <div class="suggest-result" id="mf-jual">Rp 0 / unit</div>
+          <div class="suggest-benchmark">Markup lazim manufaktur/konveksi skala UMKM: 30–60%, tergantung kompleksitas produk &amp; volume.</div>
+        </div>
+
+        <button class="save-btn" onclick="app.simpanManufaktur()">💾 Simpan hasil ke Google Sheets</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RIWAYAT LOKAL ============ -->
+  <section class="tab-page" id="page-riwayat">
+    <div class="sector-intro">
+      <div class="big-icon" style="background:var(--lilac)">📁</div>
+      <div>
+        <h2>Riwayat &amp; Backup Lokal</h2>
+        <div class="meta">Tersimpan di browser ini saja — tidak perlu Google Sheets untuk mulai memakainya.</div>
+        <div class="formula-chip">Setiap "💾 Simpan hasil" otomatis tercatat di sini juga</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="hist-actions">
+        <button class="file-btn" onclick="app.exportCSV()">⬇️ Unduh CSV</button>
+        <label class="file-btn">
+          ⬆️ Impor CSV
+          <input type="file" accept=".csv" style="display:none" onchange="app.importCSV(this.files[0]); this.value='';">
+        </label>
+        <button class="file-btn danger" onclick="app.clearHistory()">🗑️ Hapus Semua</button>
+      </div>
+      <div id="history-table"></div>
+    </div>
+  </section>
+
+  <footer class="pf-footer">
+    Rumus disusun dari praktik akuntansi umum di Indonesia (perusahaan dagang, food cost F&amp;B, manufaktur full-costing).<br>
+    Jumlah unit usaha per sektor mengacu pada klasifikasi KBLI, data UKMIndonesia.id / BPS 2025. Untuk kebutuhan pajak &amp; audit resmi, konsultasikan akuntan bersertifikat.<br>
+    Data yang disimpan lewat fitur Google Sheets tersimpan langsung ke akun Google milik masing-masing pengguna.
+  </footer>
+</div>
+
+<div class="pf-toast" id="pf-toast"></div>
+
+<script src="../shared/utils.js"></script>
+<script src="hpp.js"></script>
+</body>
+</html>
