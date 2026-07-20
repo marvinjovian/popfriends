@@ -28,9 +28,9 @@
 .inv-head .meta{ text-align:right; }
 .inv-head .meta .num{ font-family:'IBM Plex Mono',monospace; font-size:12.5px; font-weight:700; }
 .inv-head .meta .status{
-  display:inline-block; margin-top:6px; background:var(--yellow); color:var(--ink);
+  display:inline-block; margin-top:6px; color:var(--ink);
   font-family:'Baloo 2',sans-serif; font-weight:700; font-size:11px; text-transform:uppercase;
-  padding:3px 12px; border-radius:999px; border:2px solid var(--line);
+  padding:3px 12px; border-radius:999px; border:2px solid var(--line); background:var(--yellow);
 }
 
 .inv-body{ padding:22px 24px; }
