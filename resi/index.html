@@ -27,81 +27,135 @@
     <p>Isi data penerima &amp; pengirim, generate labelnya, terus tinggal preview PDF atau save jadi gambar.</p>
   </header>
 
-  <div class="grid-2col">
-    <div>
-      <div class="card">
-        <h3><span class="dot" style="background:var(--mint)"></span>Data Penerima</h3>
-        <div class="field">
-          <label>Nama Penerima</label>
-          <input type="text" id="rn-nama" placeholder="mis. Sarah Amelia">
-        </div>
-        <div class="field">
-          <label>Kontak Penerima</label>
-          <input type="text" id="rn-kontak" placeholder="mis. 0812-3456-7890">
-        </div>
-        <div class="field">
-          <label>Alamat Penerima</label>
-          <textarea id="rn-alamat" placeholder="mis. Jl. Melati No. 12, RT 03/RW 05, Kel. Sukamaju, Kec. Cibiru, Bandung, 40614"></textarea>
-        </div>
-      </div>
+  <nav class="pill-nav">
+    <button class="pill-btn active" data-c="mint" data-tab="buat" onclick="app.showTab('tab-buat', this)">
+      <span class="icon">📦</span> Buat Resi
+    </button>
+    <button class="pill-btn" data-c="lilac" data-tab="riwayat" onclick="app.showTab('tab-riwayat', this)">
+      <span class="icon">📁</span> Riwayat Resi
+    </button>
+  </nav>
 
-      <div class="card">
-        <h3><span class="dot" style="background:var(--sky)"></span>Data Pengirim</h3>
-        <div class="two-col">
+  <!-- ============ TAB: BUAT RESI ============ -->
+  <section class="tab-page active" id="tab-buat">
+    <div class="grid-2col">
+      <div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--mint)"></span>Data Penerima</h3>
           <div class="field">
-            <label>Nama Pengirim</label>
-            <input type="text" id="rn-nama-kirim" placeholder="mis. Wredha Store">
+            <label>Nama Penerima</label>
+            <input type="text" id="rn-nama" placeholder="mis. Sarah Amelia">
           </div>
           <div class="field">
-            <label>No. Telepon Pengirim</label>
-            <input type="text" id="rn-telp-kirim" placeholder="mis. 0821-1122-3344">
+            <label>Kontak Penerima</label>
+            <input type="text" id="rn-kontak" placeholder="mis. 0812-3456-7890">
+          </div>
+          <div class="field">
+            <label>Alamat Penerima</label>
+            <textarea id="rn-alamat" placeholder="mis. Jl. Melati No. 12, RT 03/RW 05, Kel. Sukamaju, Kec. Cibiru, Bandung, 40614"></textarea>
           </div>
         </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--sky)"></span>Data Pengirim</h3>
+          <div class="field">
+            <label>Pengirim tersimpan</label>
+            <select id="rn-pengirim-tersimpan" onchange="app.pilihPengirimTersimpan(this.value)">
+              <option value="">— pilih pengirim tersimpan (opsional) —</option>
+            </select>
+          </div>
+          <div class="two-col">
+            <div class="field">
+              <label>Nama Pengirim</label>
+              <input type="text" id="rn-nama-kirim" placeholder="mis. Wredha Store">
+            </div>
+            <div class="field">
+              <label>No. Telepon Pengirim</label>
+              <input type="text" id="rn-telp-kirim" placeholder="mis. 0821-1122-3344">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3><span class="dot" style="background:var(--peach)"></span>Jenis Paket</h3>
+          <div class="package-options">
+            <label class="package-opt">
+              <input type="radio" name="package-type" value="reguler" checked>
+              <span class="opt-box">📦<br>Reguler</span>
+            </label>
+            <label class="package-opt">
+              <input type="radio" name="package-type" value="express">
+              <span class="opt-box">🚀<br>Express</span>
+            </label>
+            <label class="package-opt">
+              <input type="radio" name="package-type" value="fragile">
+              <span class="opt-box">🔔<br>Fragile</span>
+            </label>
+          </div>
+          <div class="ing-caption">Jenis paket menentukan gaya catatan random yang muncul di label.</div>
+        </div>
+
+        <button class="btn-primary" onclick="app.buatDariForm()">Buat Resi →</button>
       </div>
 
-      <button class="btn-primary" onclick="app.buatDariForm()">Buat Resi →</button>
+      <div class="preview-wrap">
+        <div class="preview-placeholder" id="resi-placeholder">
+          Isi data di sebelah kiri, lalu klik "Buat Resi" — label muncul di sini 👇
+        </div>
+
+        <div class="preview-box resi-label" id="resi-label">
+          <div class="resi-head">
+            <span class="brand">📦 Buatin Resi</span>
+            <div style="text-align:right;">
+              <div class="idnum" id="resi-idnum">#RESI-000000</div>
+              <span class="package-badge" id="resi-badge">📦 Reguler</span>
+            </div>
+          </div>
+          <div class="resi-body">
+            <div class="resi-section penerima">
+              <span class="tag">Kepada</span>
+              <p class="resi-name" id="out-nama">-</p>
+              <p class="resi-line" id="out-kontak">-</p>
+              <p class="resi-line muted" id="out-alamat">-</p>
+            </div>
+            <div class="resi-section pengirim">
+              <span class="tag">Dari</span>
+              <p class="resi-name" id="out-nama-kirim" style="font-size:16px;">-</p>
+              <p class="resi-line muted" id="out-telp-kirim">-</p>
+            </div>
+            <div class="resi-note">
+              <span class="emoji" id="resi-note-emoji">📦</span>
+              <span id="resi-note-text">Catatan bakal muncul di sini.</span>
+            </div>
+          </div>
+          <div class="resi-foot">
+            <span id="resi-tanggal">-</span>
+            <span>Dibuat via Buatin Resi</span>
+          </div>
+        </div>
+
+        <div class="action-row" id="action-row" style="display:none;">
+          <button class="action-btn" onclick="app.previewPDF()">📄 Preview PDF</button>
+          <button class="action-btn" onclick="app.saveAsImage()">💾 Save Gambar</button>
+          <button class="action-btn" onclick="app.acakCatatan()">🎲 Acak Catatan</button>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div class="preview-wrap">
-      <div class="preview-placeholder" id="resi-placeholder">
-        Isi data di sebelah kiri, lalu klik "Buat Resi" — label muncul di sini 👇
-      </div>
-
-      <div class="preview-box resi-label" id="resi-label">
-        <div class="resi-head">
-          <span class="brand">📦 Buatin Resi</span>
-          <span class="idnum" id="resi-idnum">#RESI-000000</span>
-        </div>
-        <div class="resi-body">
-          <div class="resi-section penerima">
-            <span class="tag">Kepada</span>
-            <p class="resi-name" id="out-nama">-</p>
-            <p class="resi-line" id="out-kontak">-</p>
-            <p class="resi-line muted" id="out-alamat">-</p>
-          </div>
-          <div class="resi-section pengirim">
-            <span class="tag">Dari</span>
-            <p class="resi-name" id="out-nama-kirim" style="font-size:16px;">-</p>
-            <p class="resi-line muted" id="out-telp-kirim">-</p>
-          </div>
-          <div class="resi-note">
-            <span class="emoji" id="resi-note-emoji">📦</span>
-            <span id="resi-note-text">Catatan bakal muncul di sini.</span>
-          </div>
-        </div>
-        <div class="resi-foot">
-          <span id="resi-tanggal">-</span>
-          <span>Dibuat via Buatin Resi</span>
-        </div>
-      </div>
-
-      <div class="action-row" id="action-row" style="display:none;">
-        <button class="action-btn" onclick="app.previewPDF()">📄 Preview PDF</button>
-        <button class="action-btn" onclick="app.saveAsImage()">💾 Save Gambar</button>
-        <button class="action-btn" onclick="app.acakCatatan()">🎲 Acak Catatan</button>
+  <!-- ============ TAB: RIWAYAT RESI ============ -->
+  <section class="tab-page" id="tab-riwayat">
+    <div class="sector-intro">
+      <div class="big-icon" style="background:var(--lilac)">📁</div>
+      <div>
+        <h2>Riwayat Resi</h2>
+        <div class="meta">Semua resi yang pernah dibuat tersimpan di browser ini.</div>
       </div>
     </div>
-  </div>
+    <div class="card">
+      <div id="history-table"></div>
+    </div>
+  </section>
 
   <footer class="pf-footer">
     Nama &amp; alamat cuma tersimpan di label yang kamu print/save sendiri — nggak ada data yang dikirim ke server mana pun.
