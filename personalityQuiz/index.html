@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can AI Guess Your Personality?</title>
+<meta name="description" content="A 2-minute AI-powered personality quiz with a detailed, shareable report.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+        colors: {
+          brand: { purple: '#a855f7', blue: '#3b82f6', pink: '#f472b6' }
+        }
+      }
+    }
+  };
+</script>
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Hidden SVG defs: gradients reused by circular progress rings -->
+<svg width="0" height="0" class="absolute">
+  <defs>
+    <linearGradient id="gradA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"></stop>
+      <stop offset="100%" stop-color="#3b82f6"></stop>
+    </linearGradient>
+    <linearGradient id="gradB" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"></stop>
+      <stop offset="100%" stop-color="#f472b6"></stop>
+    </linearGradient>
+  </defs>
+</svg>
+</head>
+<body class="min-h-screen antialiased">
+
+<div class="aurora-bg" aria-hidden="true"></div>
+<canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+<!-- Toast notification -->
+<div id="toast" role="status" aria-live="polite"
+  class="opacity-0 translate-y-4 glass-card px-5 py-3 rounded-full text-sm font-semibold text-white shadow-xl">
+</div>
+
+<!-- ============ PAGE 1: LANDING ============ -->
+<main id="page-landing" class="relative min-h-screen flex items-center justify-center px-6 py-16">
+  <div class="floating-blob w-72 h-72 bg-purple-500 top-10 left-[-4rem]" aria-hidden="true"></div>
+  <div class="floating-blob w-80 h-80 bg-blue-500 bottom-0 right-[-5rem]" aria-hidden="true" style="animation-delay:2s;"></div>
+
+  <div class="relative z-10 max-w-2xl mx-auto text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-xs font-semibold text-purple-200 mb-8">
+      <span aria-hidden="true">✨</span> AI-Powered Personality Analysis
+    </div>
+
+    <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-300 via-white to-blue-300">
+      Can AI Guess<br class="hidden sm:block"> Your Personality?
+    </h1>
+
+    <p class="text-slate-300/90 text-base sm:text-lg mb-10 max-w-lg mx-auto leading-relaxed">
+      Answer 15 quick questions about how you think, work, and connect —
+      our rule-based AI engine will map your answers to a detailed personality report.
+    </p>
+
+    <button id="start-quiz-btn" type="button"
+      class="ripple relative inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-lg
+        bg-gradient-to-r from-purple-500 to-blue-500 shadow-[0_8px_30px_rgba(168,85,247,0.4)]
+        hover:shadow-[0_8px_40px_rgba(168,85,247,0.55)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
+      Start Quiz <span aria-hidden="true">→</span>
+    </button>
+
+    <p class="mt-5 text-sm text-slate-400 flex items-center justify-center gap-2">
+      <span aria-hidden="true">⏱️</span> Takes about 2–3 minutes · 15 questions
+    </p>
+  </div>
+</main>
+
+<!-- ============ PAGE 2: QUIZ ============ -->
+<main id="page-quiz" class="hidden relative min-h-screen flex items-center justify-center px-4 py-10 sm:py-16">
+  <div class="w-full max-w-xl">
+    <!-- Progress -->
+    <div class="mb-6">
+      <div class="flex justify-between items-center mb-2">
+        <span id="quiz-progress-label" class="text-xs font-semibold text-slate-400">Question 1 of 15</span>
+      </div>
+      <div class="h-2 rounded-full bg-white/8 overflow-hidden" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div id="quiz-progress-bar" class="h-full rounded-full bg-gradient-to-r from-purple-400 to-blue-400 transition-all duration-500 ease-out" style="width:6.6%"></div>
+      </div>
+    </div>
+
+    <!-- Question card -->
+    <div class="glass-card rounded-3xl p-6 sm:p-8 shadow-2xl transition-all duration-200">
+      <div id="question-container"></div>
+    </div>
+
+    <!-- Nav buttons -->
+    <div class="flex justify-between mt-6 gap-3">
+      <button id="quiz-prev-btn" type="button"
+        class="ripple px-5 py-3 rounded-xl font-semibold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+        ← Previous
+      </button>
+      <button id="quiz-next-btn" type="button"
+        class="ripple px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg">
+        Next
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ PAGE 3: AI ANALYSIS / LOADING ============ -->
+<main id="page-loading" class="hidden relative min-h-screen flex items-center justify-center px-6">
+  <div class="text-center max-w-md mx-auto">
+    <div class="relative w-24 h-24 mx-auto mb-8">
+      <div class="absolute inset-0 rounded-full border-4 border-white/10"></div>
+      <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-purple-400 border-r-blue-400 animate-spin"></div>
+      <div class="absolute inset-0 flex items-center justify-center text-3xl">🧠</div>
+    </div>
+    <p id="loading-message" class="text-lg font-semibold text-white mb-6 transition-opacity duration-200">Reading your answers...</p>
+    <div class="h-1.5 w-64 mx-auto rounded-full bg-white/8 overflow-hidden">
+      <div id="loading-progress-bar" class="h-full rounded-full bg-gradient-to-r from-purple-400 to-blue-400 transition-all duration-[1800ms] ease-linear" style="width:0%"></div>
+    </div>
+  </div>
+</main>
+
+<!-- ============ PAGE 4: RESULTS ============ -->
+<main id="page-results" class="hidden relative min-h-screen px-4 py-12 sm:py-16">
+  <div class="max-w-3xl mx-auto">
+
+    <div id="result-card" class="glass-card rounded-3xl p-6 sm:p-10 shadow-2xl">
+
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <div id="result-emoji" class="text-6xl mb-4">🚀</div>
+        <p class="text-xs uppercase tracking-widest text-purple-300 font-semibold mb-2">Your Personality Type</p>
+        <h2 id="result-type" class="text-3xl sm:text-4xl font-extrabold text-white mb-3">The Visionary Innovator</h2>
+        <p id="result-description" class="text-slate-300 max-w-md mx-auto mb-4">You see possibilities before anyone else even notices the problem.</p>
+        <span id="result-confidence" class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-gradient-to-r from-purple-500/25 to-blue-500/25 border border-purple-400/30 text-purple-200">
+          92% Match Confidence
+        </span>
+      </div>
+
+      <!-- Circular progress trio -->
+      <div class="grid grid-cols-3 gap-4 mb-10">
+        <div class="text-center">
+          <div id="ring-creativity" class="mx-auto mb-2"></div>
+          <p class="text-xs font-semibold text-slate-400">Creativity</p>
+        </div>
+        <div class="text-center">
+          <div id="ring-leadership" class="mx-auto mb-2"></div>
+          <p class="text-xs font-semibold text-slate-400">Leadership</p>
+        </div>
+        <div class="text-center">
+          <div id="ring-eq" class="mx-auto mb-2"></div>
+          <p class="text-xs font-semibold text-slate-400">Emotional IQ</p>
+        </div>
+      </div>
+
+      <!-- Introvert / Extrovert -->
+      <div class="mb-8">
+        <div class="flex justify-between text-sm font-semibold mb-2">
+          <span class="text-blue-300">Introvert <span id="introvert-pct">50%</span></span>
+          <span class="text-purple-300">Extrovert <span id="extrovert-pct">50%</span></span>
+        </div>
+        <div class="skill-bar-track h-3">
+          <div id="extrovert-bar" class="skill-bar-fill bg-gradient-to-r from-blue-400 to-purple-400"></div>
+        </div>
+      </div>
+
+      <!-- Skill bars -->
+      <div class="grid sm:grid-cols-2 gap-5 mb-10">
+        <div>
+          <div class="flex justify-between text-sm font-semibold mb-1.5">
+            <span class="text-slate-300">Openness</span><span id="bar-openness-label" class="text-slate-400">0%</span>
+          </div>
+          <div class="skill-bar-track h-2.5"><div id="bar-openness" class="skill-bar-fill bg-purple-400"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-semibold mb-1.5">
+            <span class="text-slate-300">Conscientiousness</span><span id="bar-conscientiousness-label" class="text-slate-400">0%</span>
+          </div>
+          <div class="skill-bar-track h-2.5"><div id="bar-conscientiousness" class="skill-bar-fill bg-blue-400"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-semibold mb-1.5">
+            <span class="text-slate-300">Agreeableness</span><span id="bar-agreeableness-label" class="text-slate-400">0%</span>
+          </div>
+          <div class="skill-bar-track h-2.5"><div id="bar-agreeableness" class="skill-bar-fill bg-pink-400"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-semibold mb-1.5">
+            <span class="text-slate-300">Emotional Stability</span><span id="bar-stability-label" class="text-slate-400">0%</span>
+          </div>
+          <div class="skill-bar-track h-2.5"><div id="bar-stability" class="skill-bar-fill bg-emerald-400"></div></div>
+        </div>
+      </div>
+
+      <!-- Radar chart -->
+      <div class="flex justify-center mb-10">
+        <canvas id="radar-canvas" width="280" height="280" role="img" aria-label="Radar chart of your five personality traits"></canvas>
+      </div>
+
+      <!-- Narrative grid -->
+      <div class="grid sm:grid-cols-2 gap-4 mb-10">
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-purple-300 mb-1">💬 Communication Style</p>
+          <p id="communication-style" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-blue-300 mb-1">🧭 Decision Style</p>
+          <p id="decision-style" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-emerald-300 mb-1">💪 Biggest Strength</p>
+          <p id="biggest-strength" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-rose-300 mb-1">⚠️ Biggest Weakness</p>
+          <p id="biggest-weakness" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-yellow-300 mb-1">🌟 Hidden Talent</p>
+          <p id="hidden-talent" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-slate-400 mb-1">😨 Biggest Fear</p>
+          <p id="biggest-fear" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-purple-300 mb-1">💼 Ideal Career</p>
+          <p id="ideal-career" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-blue-300 mb-1">🏢 Best Work Environment</p>
+          <p id="work-environment" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-pink-300 mb-1">❤️ Love Language</p>
+          <p id="love-language" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+          <p class="text-xs font-semibold text-emerald-300 mb-1">📚 Learning Style</p>
+          <p id="learning-style" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:col-span-2">
+          <p class="text-xs font-semibold text-yellow-300 mb-1">⚡ Productivity Tip</p>
+          <p id="productivity-tip" class="text-slate-200 font-medium">—</p>
+        </div>
+        <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:col-span-2">
+          <p class="text-xs font-semibold text-purple-300 mb-1">🌍 Famous People Like You</p>
+          <p id="famous-people" class="text-slate-200 font-medium">—</p>
+        </div>
+      </div>
+
+      <!-- Badges -->
+      <div class="mb-10">
+        <p class="text-xs font-semibold text-slate-400 mb-3 text-center uppercase tracking-widest">Badges Earned</p>
+        <div id="badge-container" class="flex flex-wrap justify-center gap-2.5"></div>
+      </div>
+
+      <!-- Quote -->
+      <blockquote id="motivational-quote" class="text-center text-slate-300 italic text-sm sm:text-base mb-2 px-4">
+        "Know thyself."
+      </blockquote>
+    </div>
+
+    <!-- Action buttons (outside the card so they're excluded from PNG export) -->
+    <div class="flex flex-wrap justify-center gap-3 mt-8">
+      <button id="download-btn" type="button" class="ripple px-5 py-3 rounded-xl font-semibold text-white bg-white/8 border border-white/15 hover:bg-white/12 transition-all">
+        📥 Download PNG
+      </button>
+      <button id="copy-btn" type="button" class="ripple px-5 py-3 rounded-xl font-semibold text-white bg-white/8 border border-white/15 hover:bg-white/12 transition-all">
+        📋 Copy Result
+      </button>
+      <button id="share-btn" type="button" class="ripple px-5 py-3 rounded-xl font-semibold text-white bg-white/8 border border-white/15 hover:bg-white/12 transition-all">
+        🔗 Share
+      </button>
+      <button id="restart-btn" type="button" class="ripple px-5 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg">
+        🔄 Retake Quiz
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- ============ Scripts (order matters: data → engine → ui → app) ============ -->
+<script src="js/data/questions.js"></script>
+<script src="js/data/archetypes.js"></script>
+<script src="js/engine/scoring-engine.js"></script>
+<script src="js/engine/badge-engine.js"></script>
+<script src="js/ui/circular-progress.js"></script>
+<script src="js/ui/radar-chart.js"></script>
+<script src="js/ui/confetti.js"></script>
+<script src="js/ui/quiz-controller.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
